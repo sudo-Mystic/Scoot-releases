@@ -1,7 +1,7 @@
 {
   "channel": "stable",
   "version": "0.4.0",
-  "versionCode": 4,
+  "versionCode": 2004,
   "minSupportedVersion": "0.1.0",
   "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.0/app-arm64-v8a-release.apk",
   "sha256": "9001a4f6d6412cabec306d5dee4dc92ad4b00e6c88f1240f1bd35897da7ed9fe",
