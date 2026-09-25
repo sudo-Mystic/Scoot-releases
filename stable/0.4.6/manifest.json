@@ -1,0 +1,29 @@
+{
+  "channel": "stable",
+  "version": "0.4.6",
+  "versionCode": 2010,
+  "minSupportedVersion": "0.1.0",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.6/app-arm64-v8a-release.apk",
+  "sha256": "d76c3b97ec14f8f998814ab4a561523fa6286abe8793bd017542f57ee5609b25",
+  "signature": "",
+  "releaseNotes": "Merge pull request #14 from sudo-Mystic/release/v0.4.6\n\nrelease: v0.4.6 - JRC parity batch",
+  "createdAt": "2026-09-25T15:42:16.619993Z",
+  "protocolCompatibility": {},
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.6/app-arm64-v8a-release.apk",
+      "sha256": "d76c3b97ec14f8f998814ab4a561523fa6286abe8793bd017542f57ee5609b25"
+    },
+    {
+      "abi": "armeabi-v7a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.6/app-armeabi-v7a-release.apk",
+      "sha256": "2fc4bdf24c8f52fb0c65421ecb6b5688e05c21e42c7a48cdcadc8a533abe20ab"
+    },
+    {
+      "abi": "x86_64",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.6/app-x86_64-release.apk",
+      "sha256": "6946ab203ed13728a87fee9268cce897d3203821814d16c9429b99c9065b34c4"
+    }
+  ]
+}
