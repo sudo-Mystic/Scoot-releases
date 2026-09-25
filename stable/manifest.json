@@ -1,29 +1,29 @@
 {
   "channel": "stable",
-  "version": "0.4.4",
-  "versionCode": 2008,
+  "version": "0.4.5",
+  "versionCode": 2009,
   "minSupportedVersion": "0.1.0",
-  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.4/app-arm64-v8a-release.apk",
-  "sha256": "6b9e7d01944a6806a20832ddebd7d334c13e4b81975119bd4541d44832507321",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.5/app-arm64-v8a-release.apk",
+  "sha256": "b8cd9e1b016e92125df2c8029ff199162ff7cd760653dbd07ecfe1a731953c8f",
   "signature": "",
-  "releaseNotes": "Merge pull request #12 from sudo-Mystic/release/v0.4.4\n\nRelease v0.4.4: handlebar call answer/reject + dex-verified telemetry corrections",
-  "createdAt": "2026-09-25T04:10:10.765001Z",
+  "releaseNotes": "Merge pull request #13 from sudo-Mystic/release/v0.4.5\n\nrelease/v0.4.5",
+  "createdAt": "2026-09-25T08:28:33.913867Z",
   "protocolCompatibility": {},
   "artifacts": [
     {
       "abi": "arm64-v8a",
-      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.4/app-arm64-v8a-release.apk",
-      "sha256": "6b9e7d01944a6806a20832ddebd7d334c13e4b81975119bd4541d44832507321"
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.5/app-arm64-v8a-release.apk",
+      "sha256": "b8cd9e1b016e92125df2c8029ff199162ff7cd760653dbd07ecfe1a731953c8f"
     },
     {
       "abi": "armeabi-v7a",
-      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.4/app-armeabi-v7a-release.apk",
-      "sha256": "a836a65753bf0564ea51ebafcda31a527eb18251451d111545ba9022ac0d50d0"
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.5/app-armeabi-v7a-release.apk",
+      "sha256": "07c0d3d670209f17a808a3b3a36b0954107790b999b06325530716c16474924f"
     },
     {
       "abi": "x86_64",
-      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.4/app-x86_64-release.apk",
-      "sha256": "cfba8671d343aa0e4fb9a00257840292b719b168e201a32192e19dcae93f0d74"
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.5/app-x86_64-release.apk",
+      "sha256": "1f2fe93bc1cdd0a3e94bc2944e67bd9f3636c3664123ecf372c627b19fb9d515"
     }
   ]
 }
