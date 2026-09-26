@@ -3,194 +3,413 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scoot — download the app</title>
-<meta name="description" content="Download Scoot, the companion app for TVS scooters. Live telemetry, navigation on your cluster, trip log, parked-location memory.">
+<title>Scoot — your scooter, on your phone</title>
+<meta name="description" content="Scoot is the companion app for TVS Jupiter and Ntorq scooters. Live ride data, directions on your dashboard, and a memory of where you parked.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --canvas: #FBF8FF;
-    --card: #FFFFFF;
-    --ink: #1A1B26;
-    --ink-soft: #47464B;
-    --hairline: rgba(30, 30, 36, 0.10);
-    --cta: #1E1E24;
-    --accent: #2E6BE6;
-    --good: #1B7A3D;
-    --bad: #B3261E;
-    --radius: 20px;
+    color-scheme: light;
+    --bg: #f4f6f3;
+    --surface: #ffffff;
+    --surface-2: #e9ede8;
+    --ink: #162018;
+    --muted: #5d695f;
+    --line: #d8ddd7;
+    --accent: #c8f000;
+    --accent-ink: #182000;
+    --dark: #15261d;
+    --dark-2: #1e3327;
+    --radius: 24px;
+    --shadow: 0 16px 42px rgba(25, 36, 27, .10);
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    background: var(--canvas);
+    background: var(--bg);
     color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+    font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px 64px; }
-  header {
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px 72px; }
+
+  /* top bar */
+  header.top {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 0;
+    padding: 22px 4px;
   }
-  .brand { font-weight: 800; font-size: 22px; letter-spacing: -0.02em; }
-  .brand small { display: block; font-weight: 400; font-size: 12px; color: var(--ink-soft); letter-spacing: 0; }
-  .ver-badge {
-    font-size: 13px; font-weight: 600; color: var(--ink-soft);
-    border: 1px solid var(--hairline); border-radius: 999px;
-    padding: 6px 14px; background: var(--card); white-space: nowrap;
+  .brand { font-weight: 800; font-size: 24px; letter-spacing: -0.02em; }
+  .brand small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+  .ver-pill {
+    font-size: 13px; font-weight: 700; color: var(--muted);
+    background: var(--surface); border: 1px solid var(--line);
+    padding: 8px 16px; border-radius: 999px; white-space: nowrap;
+    box-shadow: var(--shadow);
   }
-  .hero { text-align: center; padding: 36px 0 8px; }
-  .hero h1 { font-size: 34px; margin: 0 0 12px; letter-spacing: -0.02em; }
-  .hero p { color: var(--ink-soft); margin: 0 auto 28px; max-width: 520px; }
-  .btn {
-    display: inline-block; background: var(--cta); color: #fff;
-    font-weight: 700; font-size: 17px; text-decoration: none;
-    padding: 16px 36px; border-radius: 999px; border: 0; cursor: pointer;
+  .ver-pill b { color: var(--ink); }
+
+  /* hero */
+  .hero {
+    position: relative; overflow: hidden;
+    border-radius: 30px;
+    background: radial-gradient(120% 140% at 85% 10%, var(--dark-2) 0%, var(--dark) 55%);
+    color: #fff;
+    padding: 40px;
+    display: grid; grid-template-columns: 1.05fr .95fr; gap: 32px;
+    align-items: center;
+    box-shadow: var(--shadow);
   }
-  .btn:hover { opacity: 0.88; }
-  .btn.secondary {
-    background: var(--card); color: var(--ink);
-    border: 1.5px solid var(--hairline); font-size: 15px; padding: 12px 26px;
+  @media (max-width: 720px) {
+    .hero { grid-template-columns: 1fr; padding: 30px 26px; }
   }
-  .fine { font-size: 13px; color: var(--ink-soft); margin-top: 14px; }
-  section { margin-top: 44px; }
-  h2 { font-size: 21px; margin: 0 0 14px; letter-spacing: -0.01em; }
-  .card {
-    background: var(--card); border: 1px solid var(--hairline);
-    border-radius: var(--radius); padding: 20px; margin-bottom: 12px;
+  .hero .kicker {
+    display: inline-block;
+    font-size: 12.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(200, 240, 0, .35);
+    padding: 7px 14px; border-radius: 999px; margin-bottom: 18px;
   }
-  .notes { margin: 0; padding-left: 20px; }
-  .notes li { margin-bottom: 6px; }
-  .abi-grid { display: grid; gap: 12px; }
-  @media (min-width: 560px) { .abi-grid { grid-template-columns: 1fr 1fr 1fr; } }
-  .abi { text-align: left; }
-  .abi h3 { margin: 0 0 4px; font-size: 15px; }
-  .abi .sub { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 12px; }
-  .sha {
+  .hero h1 {
+    font-size: clamp(34px, 5vw, 52px);
+    line-height: 1.04; letter-spacing: -0.03em;
+    margin: 0 0 16px; font-weight: 800;
+  }
+  .hero h1 .lime { color: var(--accent); }
+  .hero p.lead { color: rgba(255, 255, 255, .78); font-size: 17px; margin: 0 0 28px; max-width: 44ch; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .btn-primary {
+    display: inline-block;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 800; font-size: 17px; text-decoration: none;
+    padding: 16px 34px; border-radius: 999px; border: 0; cursor: pointer;
+    box-shadow: 0 10px 26px rgba(200, 240, 0, .25);
+    transition: transform .12s ease;
+  }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-block;
+    color: #fff; font-weight: 700; font-size: 15px; text-decoration: none;
+    padding: 14px 24px; border-radius: 999px;
+    border: 1.5px solid rgba(255, 255, 255, .25);
+  }
+  .btn-ghost:hover { border-color: rgba(255, 255, 255, .6); }
+  .hero-fine { margin-top: 16px; font-size: 13px; color: rgba(255, 255, 255, .55); }
+  .hero-photo {
+    width: 100%; border-radius: 22px; display: block;
+    border: 1px solid rgba(255, 255, 255, .14);
+    box-shadow: 0 24px 50px rgba(0, 0, 0, .35);
+    aspect-ratio: 4 / 3; object-fit: cover;
+  }
+  .photo-tag {
+    margin-top: 10px; font-size: 12.5px; color: rgba(255, 255, 255, .5); text-align: right;
+  }
+
+  /* sections */
+  section { margin-top: 56px; }
+  .sec-head { margin: 0 0 6px; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+  .sec-sub { margin: 0 0 22px; color: var(--muted); font-size: 16px; }
+
+  /* scooter cards */
+  .rides { display: grid; gap: 16px; }
+  @media (min-width: 640px) { .rides { grid-template-columns: 1fr 1fr; } }
+  .ride-card {
+    background: var(--surface); border-radius: var(--radius);
+    overflow: hidden; box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .ride-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+  .ride-card .body { padding: 20px 22px 22px; }
+  .ride-card h3 { margin: 0 0 4px; font-size: 19px; letter-spacing: -0.01em; }
+  .ride-card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .tag {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    background: var(--surface-2); color: var(--ink);
+    padding: 5px 12px; border-radius: 999px; margin-bottom: 10px;
+  }
+  .tag.lime { background: var(--accent); color: var(--accent-ink); }
+
+  /* features */
+  .feats { display: grid; gap: 14px; }
+  @media (min-width: 640px) { .feats { grid-template-columns: 1fr 1fr; } }
+  .feat {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px;
+    box-shadow: var(--shadow);
+  }
+  .feat .icon {
+    width: 44px; height: 44px; border-radius: 14px;
+    background: var(--dark); color: var(--accent);
+    display: grid; place-items: center;
+    font-size: 21px; margin-bottom: 14px;
+  }
+  .feat h3 { margin: 0 0 6px; font-size: 17px; }
+  .feat p { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+  /* what's new */
+  .news-card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 26px;
+    box-shadow: var(--shadow);
+  }
+  .news-card .v { font-weight: 800; font-size: 15px; margin-bottom: 10px; }
+  .news-card .v span { color: var(--muted); font-weight: 500; }
+  ul.notes { margin: 0; padding-left: 20px; }
+  ul.notes li { margin-bottom: 8px; }
+  ul.notes li::marker { color: var(--muted); }
+
+  /* download band */
+  .get {
+    border-radius: 30px; background: var(--dark); color: #fff;
+    padding: 44px 40px; text-align: center; box-shadow: var(--shadow);
+  }
+  @media (max-width: 640px) { .get { padding: 36px 24px; } }
+  .get h2 { margin: 0 0 10px; font-size: clamp(26px, 4vw, 36px); letter-spacing: -0.02em; }
+  .get h2 .lime { color: var(--accent); }
+  .get p { color: rgba(255, 255, 255, .7); margin: 0 0 26px; }
+  .get .fine { margin-top: 18px; font-size: 13px; color: rgba(255, 255, 255, .5); }
+
+  details.more {
+    margin-top: 22px; text-align: left;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 18px; padding: 6px 18px;
+  }
+  details.more summary {
+    cursor: pointer; font-weight: 700; font-size: 14.5px;
+    padding: 12px 0; list-style: none; color: #fff;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  details.more summary::-webkit-details-marker { display: none; }
+  details.more summary .chev { color: var(--accent); font-size: 13px; }
+  details.more .inner { padding: 4px 0 16px; font-size: 14px; color: rgba(255, 255, 255, .75); }
+  .dl-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 12px 0; border-top: 1px solid rgba(255, 255, 255, .1);
+  }
+  .dl-row:first-child { border-top: 0; }
+  .dl-row .name { font-weight: 700; color: #fff; }
+  .dl-row .name small { display: block; font-weight: 400; color: rgba(255, 255, 255, .55); font-size: 12.5px; }
+  .dl-row a {
+    color: var(--accent-ink); background: var(--accent);
+    font-weight: 800; font-size: 13.5px; text-decoration: none;
+    padding: 9px 20px; border-radius: 999px; white-space: nowrap;
+  }
+  .sha-chip {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11.5px; color: var(--ink-soft); word-break: break-all;
-    background: var(--canvas); border: 1px solid var(--hairline);
-    border-radius: 10px; padding: 8px 10px; margin-top: 10px; cursor: pointer;
+    font-size: 11px; color: rgba(255, 255, 255, .55);
+    cursor: pointer; margin-top: 4px; display: inline-block;
   }
-  .sha:hover { border-color: var(--accent); }
-  ol.steps { margin: 0; padding-left: 22px; }
-  ol.steps li { margin-bottom: 10px; }
+  .sha-chip:hover { color: var(--accent); }
+
+  /* verifier */
   .verifier input[type=file] { display: none; }
-  .verifier label.btn { font-size: 15px; padding: 12px 26px; }
-  #verifyResult { margin-top: 14px; font-weight: 600; display: none; }
-  #verifyResult.ok { color: var(--good); display: block; }
-  #verifyResult.bad { color: var(--bad); display: block; }
-  #verifyResult.working { color: var(--ink-soft); display: block; }
-  .old-ver { border-bottom: 1px solid var(--hairline); padding: 12px 4px; }
-  .old-ver:last-child { border-bottom: 0; }
-  .old-ver summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  .verifier label.pick {
+    display: inline-block; margin-top: 10px;
+    border: 1.5px solid rgba(255, 255, 255, .3); color: #fff;
+    font-weight: 700; font-size: 14px; padding: 11px 22px;
+    border-radius: 999px; cursor: pointer;
+  }
+  .verifier label.pick:hover { border-color: var(--accent); }
+  #verifyResult { margin-top: 12px; font-weight: 700; font-size: 14px; display: none; }
+  #verifyResult.ok { color: var(--accent); display: block; }
+  #verifyResult.bad { color: #ff9d97; display: block; }
+  #verifyResult.working { color: rgba(255, 255, 255, .6); display: block; }
+
+  /* archive */
+  .old-ver { border-top: 1px solid rgba(255, 255, 255, .1); }
+  .old-ver summary {
+    cursor: pointer; list-style: none; font-weight: 700; color: #fff;
+    padding: 13px 0; display: flex; justify-content: space-between; align-items: center;
+  }
   .old-ver summary::-webkit-details-marker { display: none; }
-  .old-ver summary .chev { color: var(--ink-soft); font-size: 13px; }
-  .old-ver .body { margin-top: 10px; font-size: 14px; color: var(--ink-soft); }
-  .old-ver .body ul { margin: 8px 0; padding-left: 20px; }
-  footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--hairline); font-size: 13px; color: var(--ink-soft); text-align: center; }
-  footer a { color: var(--accent); }
-  .error { color: var(--bad); }
-  a { color: var(--accent); }
+  .old-ver summary .chev { color: var(--accent); font-size: 12.5px; font-weight: 500; }
+  .old-ver .body { padding: 0 0 14px; font-size: 13.5px; color: rgba(255, 255, 255, .7); }
+  .old-ver .body ul { margin: 6px 0 12px; padding-left: 18px; }
+  .old-ver .body li { margin-bottom: 5px; }
+
+  /* install steps */
+  .steps { display: grid; gap: 14px; counter-reset: step; }
+  @media (min-width: 640px) { .steps { grid-template-columns: 1fr 1fr 1fr; } }
+  .step {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow);
+    position: relative;
+  }
+  .step .num {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 800; display: grid; place-items: center;
+    margin-bottom: 12px; font-size: 15px;
+  }
+  .step h3 { margin: 0 0 6px; font-size: 16px; }
+  .step p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  footer {
+    margin-top: 64px; padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px; color: var(--muted); text-align: center;
+  }
+  footer a { color: var(--ink); font-weight: 600; }
+  footer .credits { margin-top: 8px; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <header>
-    <div class="brand">Scoot<small>scooter companion app</small></div>
-    <div class="ver-badge" id="verBadge">checking for updates…</div>
+  <header class="top">
+    <div class="brand">Scoot<small>companion app for TVS scooters</small></div>
+    <div class="ver-pill" id="verPill">checking…</div>
   </header>
 
   <div class="hero">
-    <h1>Your scooter, on your phone.</h1>
-    <p>Live telemetry, turn-by-turn navigation on your cluster display,
-    automatic trip log, and a memory of where you parked. For TVS Jupiter
-    110/125 and Ntorq 125.</p>
-    <a class="btn" id="mainDownload" href="#">Download for Android</a>
-    <div class="fine" id="mainDownloadSub">latest stable · arm64 · most phones</div>
+    <div>
+      <span class="kicker">For Jupiter &amp; Ntorq riders</span>
+      <h1>Your scooter,<br><span class="lime">on your phone.</span></h1>
+      <p class="lead">Scoot pairs with your TVS scooter over Bluetooth and puts
+      your ride on your phone: live stats, directions on your dashboard, and a
+      memory of where you parked.</p>
+      <div class="cta-row">
+        <a class="btn-primary" id="heroDownload" href="#">Download for Android</a>
+        <a class="btn-ghost" href="#whatsnew">See what’s new</a>
+      </div>
+      <div class="hero-fine" id="heroFine">Free · no account needed</div>
+    </div>
+    <div>
+      <img class="hero-photo" src="assets/jupiter.jpg" alt="TVS Jupiter scooter">
+      <div class="photo-tag">TVS Jupiter 110</div>
+    </div>
   </div>
 
   <section>
-    <h2>What’s new</h2>
-    <div class="card"><ul class="notes" id="releaseNotes"><li>Loading…</li></ul></div>
-  </section>
-
-  <section>
-    <h2>All downloads</h2>
-    <div class="abi-grid" id="abiGrid"></div>
-    <div class="fine">Pick the build for your phone’s chip. Not sure? arm64-v8a
-    fits almost every phone made in the last 8 years.</div>
-  </section>
-
-  <section>
-    <h2>Install</h2>
-    <div class="card">
-      <ol class="steps">
-        <li>Download the APK above on your phone.</li>
-        <li>Open the file. Android will ask you to allow installs from your
-        browser or file manager — allow it once.</li>
-        <li>Tap <strong>Install</strong>.</li>
-        <li>After installing, updates show up inside the app under
-        Settings → App.</li>
-      </ol>
+    <h2 class="sec-head">Made for your ride</h2>
+    <p class="sec-sub">Scoot speaks your scooter’s language. Pick yours:</p>
+    <div class="rides">
+      <div class="ride-card">
+        <img src="assets/jupiter.jpg" alt="TVS Jupiter">
+        <div class="body">
+          <span class="tag lime">Fully supported</span>
+          <h3>TVS Jupiter 110 / 125</h3>
+          <p>Every feature works out of the box.</p>
+        </div>
+      </div>
+      <div class="ride-card">
+        <img src="assets/ntorq.jpg" alt="TVS Ntorq 125">
+        <div class="body">
+          <span class="tag">Supported</span>
+          <h3>TVS Ntorq 125</h3>
+          <p>Works today; a few extras still being polished.</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <section>
-    <h2>Verify your download</h2>
-    <div class="card verifier">
-      <p style="margin-top:0">Pick the APK you downloaded and this page checks
-      its SHA-256 against the release manifest. Everything happens in your
-      browser — the file never leaves your phone.</p>
-      <label class="btn secondary" for="apkFile">Choose APK file…</label>
-      <input type="file" id="apkFile" accept=".apk">
-      <div id="verifyResult"></div>
+    <h2 class="sec-head">Why riders keep it</h2>
+    <p class="sec-sub">The stuff you’ll actually use, every ride.</p>
+    <div class="feats">
+      <div class="feat">
+        <div class="icon">◉</div>
+        <h3>Your ride, live</h3>
+        <p>Speed, fuel, distance and more, streaming to your phone while you ride.</p>
+      </div>
+      <div class="feat">
+        <div class="icon">➤</div>
+        <h3>Directions on your dashboard</h3>
+        <p>Start a trip in Google Maps and turns appear on your scooter’s display.</p>
+      </div>
+      <div class="feat">
+        <div class="icon">✆</div>
+        <h3>Calls without reaching for your phone</h3>
+        <p>See who’s calling on your dashboard, and control music from the handlebar.</p>
+      </div>
+      <div class="feat">
+        <div class="icon">⚑</div>
+        <h3>Never lose your parking spot</h3>
+        <p>Scoot remembers where you left your scooter and shows you the way back.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="whatsnew">
+    <h2 class="sec-head">What’s new</h2>
+    <p class="sec-sub" id="newsSub">Fresh out of the garage.</p>
+    <div class="news-card">
+      <div class="v" id="newsVer">Loading…</div>
+      <ul class="notes" id="releaseNotes"><li>Loading…</li></ul>
     </div>
   </section>
 
   <section>
-    <h2>Older versions</h2>
-    <div class="card" id="archive"><div class="fine">Loading…</div></div>
+    <div class="get">
+      <h2>Get <span class="lime">Scoot</span> on your phone</h2>
+      <p id="getSub">The latest version, straight from us. Free, no account, no ads.</p>
+      <a class="btn-primary" id="mainDownload" href="#" style="font-size:18px">Download for Android</a>
+      <div class="fine" id="mainDownloadSub">latest stable</div>
+
+      <details class="more">
+        <summary>Other phones &amp; versions <span class="chev">▾</span></summary>
+        <div class="inner">
+          <div id="abiList"></div>
+          <div id="archive" style="margin-top:14px"></div>
+        </div>
+      </details>
+
+      <details class="more verifier">
+        <summary>Check your download <span class="chev">▾</span></summary>
+        <div class="inner">
+          Want to be sure the file is genuine? Pick the file you downloaded and
+          we’ll check it against our records, right here in your browser. Nothing is uploaded.
+          <br>
+          <label class="pick" for="apkFile">Choose the downloaded file…</label>
+          <input type="file" id="apkFile" accept=".apk">
+          <div id="verifyResult"></div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head">Installing takes a minute</h2>
+    <p class="sec-sub">Scoot isn’t on the Play Store yet, so you install it directly. It’s easy:</p>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Download</h3>
+        <p>Tap the download button above on your phone.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Open the file</h3>
+        <p>Android will ask permission to install it. Allow it once.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Ride</h3>
+        <p>Open Scoot, pair your scooter, and go. Updates appear in the app.</p>
+      </div>
+    </div>
   </section>
 
   <footer>
     Made by <a href="https://buymeacoffee.com/sudoMystic">Rishabh Bohra</a> ·
-    <a href="https://buymeacoffee.com/sudoMystic">buy me a coffee</a> if Scoot
-    earns it.
+    <a href="https://buymeacoffee.com/sudoMystic">buy me a coffee</a> if Scoot earns it.
+    <div class="credits">Photos: SnapMeUp and M.parvage via Wikimedia Commons, CC BY 4.0.</div>
   </footer>
 </div>
 
 <script>
-const ABI_INFO = {
-  "arm64-v8a":  { title: "arm64-v8a", sub: "64-bit · recommended" },
-  "armeabi-v7a": { title: "armeabi-v7a", sub: "32-bit · older phones" },
-  "x86_64":     { title: "x86_64", sub: "emulators / Chromebooks" },
+const ABI_LABELS = {
+  "arm64-v8a":   ["Most phones", "64-bit · fits almost every phone"],
+  "armeabi-v7a": ["Older phones", "32-bit"],
+  "x86_64":      ["Emulators", "for Chromebooks & emulators"],
 };
 
-const shortSha = s => s.slice(0, 12) + "…";
-
 function notesToItems(notes, version) {
-  const lines = notes.split("\n").map(l => l.trim()).filter(Boolean);
-  // Drop a leading "Release vX.Y.Z" title line; the badge already shows it.
+  const lines = (notes || "").split("\n").map(l => l.trim()).filter(Boolean);
   const items = lines.filter(l => !(l === `Release ${version}` || l === version));
   return items.map(l => l.replace(/^[•\-*]\s*/, ""));
-}
-
-async function headSize(url) {
-  try {
-    const r = await fetch(url, { method: "HEAD" });
-    const n = parseInt(r.headers.get("content-length") || "0", 10);
-    return n > 0 ? (n / 1048576).toFixed(1) + " MB" : "";
-  } catch (_) { return ""; }
-}
-
-function copyText(el, text) {
-  navigator.clipboard.writeText(text).then(() => {
-    const old = el.textContent;
-    el.textContent = "copied!";
-    setTimeout(() => { el.textContent = old; }, 1200);
-  });
 }
 
 async function init() {
@@ -198,66 +417,74 @@ async function init() {
   try {
     m = await (await fetch("stable/manifest.json", { cache: "no-store" })).json();
   } catch (_) {
-    document.getElementById("verBadge").textContent = "couldn’t load release info";
+    document.getElementById("verPill").textContent = "couldn’t load";
     document.getElementById("releaseNotes").innerHTML =
-      '<li class="error">Couldn’t load the latest release. Try the <a href="https://github.com/sudo-Mystic/Scoot-releases/tree/main/stable">repo</a> directly.</li>';
+      "<li>Couldn’t load the latest release. Please try again in a bit.</li>";
     return;
   }
 
   const v = m.version;
-  document.getElementById("verBadge").textContent = "v" + v + " · stable";
+  document.getElementById("verPill").innerHTML = "<b>v" + v + "</b> · stable";
+  document.getElementById("newsVer").innerHTML = "Version " + v + " <span>· latest stable</span>";
 
-  const arm = (m.artifacts || []).find(a => a.abi === "arm64-v8a") || m;
-  const mainUrl = `stable/${v}/app-arm64-v8a-release.apk`;
-  const mainBtn = document.getElementById("mainDownload");
-  mainBtn.href = mainUrl;
-  document.getElementById("mainDownloadSub").textContent =
-    `v${v} · arm64 · most phones`;
-
-  document.getElementById("releaseNotes").innerHTML =
-    notesToItems(m.releaseNotes || "", v).map(n => `<li>${n}</li>`).join("") ||
-    "<li>No notes for this release.</li>";
-
-  // Per-ABI cards.
-  const grid = document.getElementById("abiGrid");
-  grid.innerHTML = "";
-  for (const a of (m.artifacts || [])) {
-    const info = ABI_INFO[a.abi] || { title: a.abi, sub: "" };
-    const url = `stable/${v}/app-${a.abi}-release.apk`;
-    const card = document.createElement("div");
-    card.className = "card abi";
-    card.innerHTML = `
-      <h3>${info.title}</h3>
-      <div class="sub">${info.sub}<span class="size"></span></div>
-      <a class="btn secondary" href="${url}" style="font-size:14px;padding:10px 20px">Download</a>
-      <div class="sha" title="click to copy full SHA-256">sha256 ${shortSha(a.sha256)}</div>`;
-    card.querySelector(".sha").addEventListener("click", e => copyText(e.target, a.sha256));
-    grid.appendChild(card);
-    headSize(url).then(s => {
-      if (s) card.querySelector(".size").textContent = " · " + s;
-    });
+  const armUrl = `stable/${v}/app-arm64-v8a-release.apk`;
+  for (const id of ["heroDownload", "mainDownload"]) {
+    document.getElementById(id).href = armUrl;
+  }
+  try {
+    const r = await fetch(armUrl, { method: "HEAD" });
+    const n = parseInt(r.headers.get("content-length") || "0", 10);
+    const size = n > 0 ? " · about " + (n / 1048576).toFixed(0) + " MB" : "";
+    document.getElementById("mainDownloadSub").textContent = "v" + v + " · latest stable" + size;
+    document.getElementById("heroFine").textContent = "Free · no account needed" + size;
+  } catch (_) {
+    document.getElementById("mainDownloadSub").textContent = "v" + v + " · latest stable";
   }
 
-  // In-browser SHA-256 verifier.
+  const items = notesToItems(m.releaseNotes, v);
+  document.getElementById("releaseNotes").innerHTML =
+    items.map(n => `<li>${n}</li>`).join("") || "<li>No notes for this release.</li>";
+
+  // Other phones.
+  const abiList = document.getElementById("abiList");
+  for (const a of (m.artifacts || [])) {
+    const [name, sub] = ABI_LABELS[a.abi] || [a.abi, ""];
+    const url = `stable/${v}/app-${a.abi}-release.apk`;
+    const row = document.createElement("div");
+    row.className = "dl-row";
+    row.innerHTML = `
+      <div class="name">${name}<small>${sub}</small>
+        <span class="sha-chip" title="click to copy">check code: ${a.sha256.slice(0, 12)}…</span>
+      </div>
+      <a href="${url}">Download</a>`;
+    row.querySelector(".sha-chip").addEventListener("click", e => {
+      navigator.clipboard.writeText(a.sha256).then(() => {
+        e.target.textContent = "copied!";
+        setTimeout(() => { e.target.textContent = "check code: " + a.sha256.slice(0, 12) + "…"; }, 1200);
+      });
+    });
+    abiList.appendChild(row);
+  }
+
+  // Download checker.
   const fileInput = document.getElementById("apkFile");
   const result = document.getElementById("verifyResult");
   const expected = new Map((m.artifacts || []).map(a => [a.sha256.toLowerCase(), a.abi]));
-  if (m.sha256) expected.set(m.sha256.toLowerCase(), "arm64-v8a");
   fileInput.addEventListener("change", async () => {
     const f = fileInput.files[0];
     if (!f) return;
     result.className = "working";
-    result.textContent = "Hashing " + f.name + "…";
+    result.textContent = "Checking " + f.name + "…";
     try {
       const buf = await f.arrayBuffer();
       const hash = await crypto.subtle.digest("SHA-256", buf);
       const hex = [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, "0")).join("");
       if (expected.has(hex)) {
         result.className = "ok";
-        result.textContent = "✓ Matches the official v" + v + " build (" + expected.get(hex) + "). Good to install.";
+        result.textContent = "✓ This is the genuine Scoot v" + v + ". Safe to install.";
       } else {
         result.className = "bad";
-        result.textContent = "✗ Doesn’t match any official checksum. Re-download from this page.";
+        result.textContent = "✗ Doesn’t match our records. Please download it again from this page.";
       }
     } catch (_) {
       result.className = "bad";
@@ -271,10 +498,11 @@ async function init() {
   try {
     const versions = await (await fetch("stable/versions.json", { cache: "no-store" })).json();
     const older = versions.filter(x => x !== v);
-    if (!older.length) {
-      arch.innerHTML = '<div class="fine">Only one release so far.</div>';
-    } else {
-      arch.innerHTML = "";
+    if (older.length) {
+      const head = document.createElement("div");
+      head.style.cssText = "font-weight:700;color:#fff;margin:6px 0 2px";
+      head.textContent = "Older versions";
+      arch.appendChild(head);
       for (const ov of older) {
         const det = document.createElement("details");
         det.className = "old-ver";
@@ -285,21 +513,18 @@ async function init() {
           const body = det.querySelector(".body");
           try {
             const om = await (await fetch(`stable/${ov}/manifest.json`)).json();
-            const items = notesToItems(om.releaseNotes || "", ov)
-              .map(n => `<li>${n}</li>`).join("");
+            const items = notesToItems(om.releaseNotes, ov).map(n => `<li>${n}</li>`).join("");
             body.innerHTML = `<ul>${items || "<li>No notes.</li>"}</ul>
-              <a class="btn secondary" style="font-size:14px;padding:10px 20px"
-                 href="stable/${ov}/app-arm64-v8a-release.apk">Download v${ov} (arm64)</a>`;
+              <div class="dl-row"><div class="name">Most phones<small>v${ov}</small></div>
+              <a href="stable/${ov}/app-arm64-v8a-release.apk">Download</a></div>`;
           } catch (_) {
-            body.innerHTML = '<span class="error">Couldn’t load notes.</span>';
+            body.innerHTML = "Couldn’t load notes.";
           }
         });
         arch.appendChild(det);
       }
     }
-  } catch (_) {
-    arch.innerHTML = '<div class="fine">Archive unavailable right now.</div>';
-  }
+  } catch (_) { /* archive stays empty */ }
 }
 
 init();
