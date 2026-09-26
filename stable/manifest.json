@@ -1,29 +1,29 @@
 {
   "channel": "stable",
-  "version": "0.4.7",
-  "versionCode": 2011,
+  "version": "0.4.8",
+  "versionCode": 2012,
   "minSupportedVersion": "0.1.0",
-  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.7/app-arm64-v8a-release.apk",
-  "sha256": "c6003efe3db89a710611c93f771bf7f5c03e7fbcd7af67a1cd2c4c70ea41c06d",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.8/app-arm64-v8a-release.apk",
+  "sha256": "d3dbbc48894a5c8c045d7f7dfe18077abd8c002c83778134c5226bd58a0ebbd9",
   "signature": "",
-  "releaseNotes": "Merge pull request #18 from sudo-Mystic/release/v0.4.7\n\nRelease v0.4.7",
-  "createdAt": "2026-09-26T10:10:53.458546Z",
+  "releaseNotes": "Release v0.4.8\n\n- \"Buy me a coffee\" card at the top of Settings if you'd like to support development\n- New \"Share usage stats\" toggle in Settings to help improve Scoot with anonymous usage data\n- Update check fixed: no more update banner right after installing the latest version; auto-check now runs when the app opens (once a day)\n- Dashboard: removed the duplicate dot next to the velocity readout\n- Navigation: compass now turns the right way; bottom card shrinks to an icon while you drag the map; warm map style by default\n- Navigation: place search shows results as you type\n- Ride Telemetry: screen title no longer cut off when connected\n- Trip history: sort chips scroll sideways instead of wrapping on narrow screens\n- Trip detail: dropped the min-speed stat; Eco/Power split only appears with real cluster data\n- Trip detail: share now offers a Google Maps route link, plus the GPX file option",
+  "createdAt": "2026-09-26T15:13:11.450561Z",
   "protocolCompatibility": {},
   "artifacts": [
     {
       "abi": "arm64-v8a",
-      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.7/app-arm64-v8a-release.apk",
-      "sha256": "c6003efe3db89a710611c93f771bf7f5c03e7fbcd7af67a1cd2c4c70ea41c06d"
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.8/app-arm64-v8a-release.apk",
+      "sha256": "d3dbbc48894a5c8c045d7f7dfe18077abd8c002c83778134c5226bd58a0ebbd9"
     },
     {
       "abi": "armeabi-v7a",
-      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.7/app-armeabi-v7a-release.apk",
-      "sha256": "e9a437caf7fe7fed3f8c18e65dd22ad13efdb7ea2b531fab83df7d6c5b99bb9a"
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.8/app-armeabi-v7a-release.apk",
+      "sha256": "22d89d3650abdbad632ce0671f8151410cd256486889fa4910ce350c15747a45"
     },
     {
       "abi": "x86_64",
-      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.7/app-x86_64-release.apk",
-      "sha256": "d9850e2e3db342f96025bc6bd2a1ca7ffff04c2c16ad9fb9db03da9ac4fd2b15"
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.8/app-x86_64-release.apk",
+      "sha256": "bd1c44dbde018f9dd853a9e2b6d560c1bf4229cb93c61b6f37237b1f7e7b0a81"
     }
   ]
 }
