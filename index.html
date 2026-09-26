@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scoot — download the app</title>
+<meta name="description" content="Download Scoot, the companion app for TVS scooters. Live telemetry, navigation on your cluster, trip log, parked-location memory.">
+<style>
+  :root {
+    --canvas: #FBF8FF;
+    --card: #FFFFFF;
+    --ink: #1A1B26;
+    --ink-soft: #47464B;
+    --hairline: rgba(30, 30, 36, 0.10);
+    --cta: #1E1E24;
+    --accent: #2E6BE6;
+    --good: #1B7A3D;
+    --bad: #B3261E;
+    --radius: 20px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px 64px; }
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 0;
+  }
+  .brand { font-weight: 800; font-size: 22px; letter-spacing: -0.02em; }
+  .brand small { display: block; font-weight: 400; font-size: 12px; color: var(--ink-soft); letter-spacing: 0; }
+  .ver-badge {
+    font-size: 13px; font-weight: 600; color: var(--ink-soft);
+    border: 1px solid var(--hairline); border-radius: 999px;
+    padding: 6px 14px; background: var(--card); white-space: nowrap;
+  }
+  .hero { text-align: center; padding: 36px 0 8px; }
+  .hero h1 { font-size: 34px; margin: 0 0 12px; letter-spacing: -0.02em; }
+  .hero p { color: var(--ink-soft); margin: 0 auto 28px; max-width: 520px; }
+  .btn {
+    display: inline-block; background: var(--cta); color: #fff;
+    font-weight: 700; font-size: 17px; text-decoration: none;
+    padding: 16px 36px; border-radius: 999px; border: 0; cursor: pointer;
+  }
+  .btn:hover { opacity: 0.88; }
+  .btn.secondary {
+    background: var(--card); color: var(--ink);
+    border: 1.5px solid var(--hairline); font-size: 15px; padding: 12px 26px;
+  }
+  .fine { font-size: 13px; color: var(--ink-soft); margin-top: 14px; }
+  section { margin-top: 44px; }
+  h2 { font-size: 21px; margin: 0 0 14px; letter-spacing: -0.01em; }
+  .card {
+    background: var(--card); border: 1px solid var(--hairline);
+    border-radius: var(--radius); padding: 20px; margin-bottom: 12px;
+  }
+  .notes { margin: 0; padding-left: 20px; }
+  .notes li { margin-bottom: 6px; }
+  .abi-grid { display: grid; gap: 12px; }
+  @media (min-width: 560px) { .abi-grid { grid-template-columns: 1fr 1fr 1fr; } }
+  .abi { text-align: left; }
+  .abi h3 { margin: 0 0 4px; font-size: 15px; }
+  .abi .sub { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 12px; }
+  .sha {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px; color: var(--ink-soft); word-break: break-all;
+    background: var(--canvas); border: 1px solid var(--hairline);
+    border-radius: 10px; padding: 8px 10px; margin-top: 10px; cursor: pointer;
+  }
+  .sha:hover { border-color: var(--accent); }
+  ol.steps { margin: 0; padding-left: 22px; }
+  ol.steps li { margin-bottom: 10px; }
+  .verifier input[type=file] { display: none; }
+  .verifier label.btn { font-size: 15px; padding: 12px 26px; }
+  #verifyResult { margin-top: 14px; font-weight: 600; display: none; }
+  #verifyResult.ok { color: var(--good); display: block; }
+  #verifyResult.bad { color: var(--bad); display: block; }
+  #verifyResult.working { color: var(--ink-soft); display: block; }
+  .old-ver { border-bottom: 1px solid var(--hairline); padding: 12px 4px; }
+  .old-ver:last-child { border-bottom: 0; }
+  .old-ver summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  .old-ver summary::-webkit-details-marker { display: none; }
+  .old-ver summary .chev { color: var(--ink-soft); font-size: 13px; }
+  .old-ver .body { margin-top: 10px; font-size: 14px; color: var(--ink-soft); }
+  .old-ver .body ul { margin: 8px 0; padding-left: 20px; }
+  footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--hairline); font-size: 13px; color: var(--ink-soft); text-align: center; }
+  footer a { color: var(--accent); }
+  .error { color: var(--bad); }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">Scoot<small>scooter companion app</small></div>
+    <div class="ver-badge" id="verBadge">checking for updates…</div>
+  </header>
+
+  <div class="hero">
+    <h1>Your scooter, on your phone.</h1>
+    <p>Live telemetry, turn-by-turn navigation on your cluster display,
+    automatic trip log, and a memory of where you parked. For TVS Jupiter
+    110/125 and Ntorq 125.</p>
+    <a class="btn" id="mainDownload" href="#">Download for Android</a>
+    <div class="fine" id="mainDownloadSub">latest stable · arm64 · most phones</div>
+  </div>
+
+  <section>
+    <h2>What’s new</h2>
+    <div class="card"><ul class="notes" id="releaseNotes"><li>Loading…</li></ul></div>
+  </section>
+
+  <section>
+    <h2>All downloads</h2>
+    <div class="abi-grid" id="abiGrid"></div>
+    <div class="fine">Pick the build for your phone’s chip. Not sure? arm64-v8a
+    fits almost every phone made in the last 8 years.</div>
+  </section>
+
+  <section>
+    <h2>Install</h2>
+    <div class="card">
+      <ol class="steps">
+        <li>Download the APK above on your phone.</li>
+        <li>Open the file. Android will ask you to allow installs from your
+        browser or file manager — allow it once.</li>
+        <li>Tap <strong>Install</strong>.</li>
+        <li>After installing, updates show up inside the app under
+        Settings → App.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>Verify your download</h2>
+    <div class="card verifier">
+      <p style="margin-top:0">Pick the APK you downloaded and this page checks
+      its SHA-256 against the release manifest. Everything happens in your
+      browser — the file never leaves your phone.</p>
+      <label class="btn secondary" for="apkFile">Choose APK file…</label>
+      <input type="file" id="apkFile" accept=".apk">
+      <div id="verifyResult"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Older versions</h2>
+    <div class="card" id="archive"><div class="fine">Loading…</div></div>
+  </section>
+
+  <footer>
+    Made by <a href="https://buymeacoffee.com/sudoMystic">Rishabh Bohra</a> ·
+    <a href="https://buymeacoffee.com/sudoMystic">buy me a coffee</a> if Scoot
+    earns it.
+  </footer>
+</div>
+
+<script>
+const ABI_INFO = {
+  "arm64-v8a":  { title: "arm64-v8a", sub: "64-bit · recommended" },
+  "armeabi-v7a": { title: "armeabi-v7a", sub: "32-bit · older phones" },
+  "x86_64":     { title: "x86_64", sub: "emulators / Chromebooks" },
+};
+
+const shortSha = s => s.slice(0, 12) + "…";
+
+function notesToItems(notes, version) {
+  const lines = notes.split("\n").map(l => l.trim()).filter(Boolean);
+  // Drop a leading "Release vX.Y.Z" title line; the badge already shows it.
+  const items = lines.filter(l => !(l === `Release ${version}` || l === version));
+  return items.map(l => l.replace(/^[•\-*]\s*/, ""));
+}
+
+async function headSize(url) {
+  try {
+    const r = await fetch(url, { method: "HEAD" });
+    const n = parseInt(r.headers.get("content-length") || "0", 10);
+    return n > 0 ? (n / 1048576).toFixed(1) + " MB" : "";
+  } catch (_) { return ""; }
+}
+
+function copyText(el, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const old = el.textContent;
+    el.textContent = "copied!";
+    setTimeout(() => { el.textContent = old; }, 1200);
+  });
+}
+
+async function init() {
+  let m;
+  try {
+    m = await (await fetch("stable/manifest.json", { cache: "no-store" })).json();
+  } catch (_) {
+    document.getElementById("verBadge").textContent = "couldn’t load release info";
+    document.getElementById("releaseNotes").innerHTML =
+      '<li class="error">Couldn’t load the latest release. Try the <a href="https://github.com/sudo-Mystic/Scoot-releases/tree/main/stable">repo</a> directly.</li>';
+    return;
+  }
+
+  const v = m.version;
+  document.getElementById("verBadge").textContent = "v" + v + " · stable";
+
+  const arm = (m.artifacts || []).find(a => a.abi === "arm64-v8a") || m;
+  const mainUrl = `stable/${v}/app-arm64-v8a-release.apk`;
+  const mainBtn = document.getElementById("mainDownload");
+  mainBtn.href = mainUrl;
+  document.getElementById("mainDownloadSub").textContent =
+    `v${v} · arm64 · most phones`;
+
+  document.getElementById("releaseNotes").innerHTML =
+    notesToItems(m.releaseNotes || "", v).map(n => `<li>${n}</li>`).join("") ||
+    "<li>No notes for this release.</li>";
+
+  // Per-ABI cards.
+  const grid = document.getElementById("abiGrid");
+  grid.innerHTML = "";
+  for (const a of (m.artifacts || [])) {
+    const info = ABI_INFO[a.abi] || { title: a.abi, sub: "" };
+    const url = `stable/${v}/app-${a.abi}-release.apk`;
+    const card = document.createElement("div");
+    card.className = "card abi";
+    card.innerHTML = `
+      <h3>${info.title}</h3>
+      <div class="sub">${info.sub}<span class="size"></span></div>
+      <a class="btn secondary" href="${url}" style="font-size:14px;padding:10px 20px">Download</a>
+      <div class="sha" title="click to copy full SHA-256">sha256 ${shortSha(a.sha256)}</div>`;
+    card.querySelector(".sha").addEventListener("click", e => copyText(e.target, a.sha256));
+    grid.appendChild(card);
+    headSize(url).then(s => {
+      if (s) card.querySelector(".size").textContent = " · " + s;
+    });
+  }
+
+  // In-browser SHA-256 verifier.
+  const fileInput = document.getElementById("apkFile");
+  const result = document.getElementById("verifyResult");
+  const expected = new Map((m.artifacts || []).map(a => [a.sha256.toLowerCase(), a.abi]));
+  if (m.sha256) expected.set(m.sha256.toLowerCase(), "arm64-v8a");
+  fileInput.addEventListener("change", async () => {
+    const f = fileInput.files[0];
+    if (!f) return;
+    result.className = "working";
+    result.textContent = "Hashing " + f.name + "…";
+    try {
+      const buf = await f.arrayBuffer();
+      const hash = await crypto.subtle.digest("SHA-256", buf);
+      const hex = [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, "0")).join("");
+      if (expected.has(hex)) {
+        result.className = "ok";
+        result.textContent = "✓ Matches the official v" + v + " build (" + expected.get(hex) + "). Good to install.";
+      } else {
+        result.className = "bad";
+        result.textContent = "✗ Doesn’t match any official checksum. Re-download from this page.";
+      }
+    } catch (_) {
+      result.className = "bad";
+      result.textContent = "Couldn’t read that file.";
+    }
+    fileInput.value = "";
+  });
+
+  // Archive.
+  const arch = document.getElementById("archive");
+  try {
+    const versions = await (await fetch("stable/versions.json", { cache: "no-store" })).json();
+    const older = versions.filter(x => x !== v);
+    if (!older.length) {
+      arch.innerHTML = '<div class="fine">Only one release so far.</div>';
+    } else {
+      arch.innerHTML = "";
+      for (const ov of older) {
+        const det = document.createElement("details");
+        det.className = "old-ver";
+        det.innerHTML = `<summary><span>v${ov}</span><span class="chev">notes + download ▾</span></summary><div class="body">Loading…</div>`;
+        det.addEventListener("toggle", async () => {
+          if (!det.open || det.dataset.loaded) return;
+          det.dataset.loaded = "1";
+          const body = det.querySelector(".body");
+          try {
+            const om = await (await fetch(`stable/${ov}/manifest.json`)).json();
+            const items = notesToItems(om.releaseNotes || "", ov)
+              .map(n => `<li>${n}</li>`).join("");
+            body.innerHTML = `<ul>${items || "<li>No notes.</li>"}</ul>
+              <a class="btn secondary" style="font-size:14px;padding:10px 20px"
+                 href="stable/${ov}/app-arm64-v8a-release.apk">Download v${ov} (arm64)</a>`;
+          } catch (_) {
+            body.innerHTML = '<span class="error">Couldn’t load notes.</span>';
+          }
+        });
+        arch.appendChild(det);
+      }
+    }
+  } catch (_) {
+    arch.innerHTML = '<div class="fine">Archive unavailable right now.</div>';
+  }
+}
+
+init();
+</script>
+</body>
+</html>
