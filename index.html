@@ -215,19 +215,6 @@
   #verifyResult.ok { color: var(--accent); display: block; }
   #verifyResult.bad { color: #ff9d97; display: block; }
   #verifyResult.working { color: rgba(255, 255, 255, .6); display: block; }
-
-  /* archive */
-  .old-ver { border-top: 1px solid rgba(255, 255, 255, .1); }
-  .old-ver summary {
-    cursor: pointer; list-style: none; font-weight: 700; color: #fff;
-    padding: 13px 0; display: flex; justify-content: space-between; align-items: center;
-  }
-  .old-ver summary::-webkit-details-marker { display: none; }
-  .old-ver summary .chev { color: var(--accent); font-size: 12.5px; font-weight: 500; }
-  .old-ver .body { padding: 0 0 14px; font-size: 13.5px; color: rgba(255, 255, 255, .7); }
-  .old-ver .body ul { margin: 6px 0 12px; padding-left: 18px; }
-  .old-ver .body li { margin-bottom: 5px; }
-
   /* install steps */
   .steps { display: grid; gap: 14px; counter-reset: step; }
   @media (min-width: 640px) { .steps { grid-template-columns: 1fr 1fr 1fr; } }
@@ -339,10 +326,9 @@
       <div class="fine" id="mainDownloadSub">latest stable</div>
 
       <details class="more">
-        <summary>Other phones &amp; versions <span class="chev">▾</span></summary>
+        <summary>Other phones <span class="chev">▾</span></summary>
         <div class="inner">
           <div id="abiList"></div>
-          <div id="archive" style="margin-top:14px"></div>
         </div>
       </details>
 
@@ -482,38 +468,6 @@ async function init() {
     fileInput.value = "";
   });
 
-  // Archive.
-  const arch = document.getElementById("archive");
-  try {
-    const versions = await (await fetch("stable/versions.json", { cache: "no-store" })).json();
-    const older = versions.filter(x => x !== v);
-    if (older.length) {
-      const head = document.createElement("div");
-      head.style.cssText = "font-weight:700;color:#fff;margin:6px 0 2px";
-      head.textContent = "Older versions";
-      arch.appendChild(head);
-      for (const ov of older) {
-        const det = document.createElement("details");
-        det.className = "old-ver";
-        det.innerHTML = `<summary><span>v${ov}</span><span class="chev">notes + download ▾</span></summary><div class="body">Loading…</div>`;
-        det.addEventListener("toggle", async () => {
-          if (!det.open || det.dataset.loaded) return;
-          det.dataset.loaded = "1";
-          const body = det.querySelector(".body");
-          try {
-            const om = await (await fetch(`stable/${ov}/manifest.json`)).json();
-            const items = notesToItems(om.releaseNotes, ov).map(n => `<li>${n}</li>`).join("");
-            body.innerHTML = `<ul>${items || "<li>No notes.</li>"}</ul>
-              <div class="dl-row"><div class="name">Most phones<small>v${ov}</small></div>
-              <a href="stable/${ov}/app-arm64-v8a-release.apk">Download</a></div>`;
-          } catch (_) {
-            body.innerHTML = "Couldn’t load notes.";
-          }
-        });
-        arch.appendChild(det);
-      }
-    }
-  } catch (_) { /* archive stays empty */ }
 }
 
 init();
