@@ -1,0 +1,29 @@
+{
+  "channel": "stable",
+  "version": "0.4.9",
+  "versionCode": 2013,
+  "minSupportedVersion": "0.1.0",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.9/app-arm64-v8a-release.apk",
+  "sha256": "c69ebd410baa16286c1b8709dbef6336992c2c462dc89f53d03a2e7e904b4146",
+  "signature": "",
+  "releaseNotes": "Release v0.4.9\n\nRelease v0.4.9\n\n- Navigation: your last parked spot now shows on the nav map\n- Navigation: Google Maps handoff fixed for destinations that failed to open\n- Navigation: destination buttons no longer wrap, and the keyboard no longer shoves the panel over search results",
+  "createdAt": "2026-09-27T07:35:31.814786Z",
+  "protocolCompatibility": {},
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.9/app-arm64-v8a-release.apk",
+      "sha256": "c69ebd410baa16286c1b8709dbef6336992c2c462dc89f53d03a2e7e904b4146"
+    },
+    {
+      "abi": "armeabi-v7a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.9/app-armeabi-v7a-release.apk",
+      "sha256": "1e5430f8e859d39b2aacde3c1315d1f9541958bf98fa797d4303172b2d186d16"
+    },
+    {
+      "abi": "x86_64",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.9/app-x86_64-release.apk",
+      "sha256": "9fddd805d4b084796bdafebab8dc93130accd9959b6ba255954dee5f6a71fd70"
+    }
+  ]
+}
