@@ -1,0 +1,29 @@
+{
+  "channel": "stable",
+  "version": "0.4.11",
+  "versionCode": 2015,
+  "minSupportedVersion": "0.1.0",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.11/app-arm64-v8a-release.apk",
+  "sha256": "5eeb9158e02fa11810e30a1e2ed7820fe91e37e5f0403f684af6e55f33e97da9",
+  "signature": "",
+  "releaseNotes": "Release v0.4.11\n\n- Navigation: the arrival time estimate now reads Maps \"Arrive 18:25\" arrival times, not just durations\n- Navigation: the maneuver calibration screen picks up new arrows live as you ride\n- Navigation: the cluster holds the last known total trip distance instead of dropping to 0",
+  "createdAt": "2026-09-28T13:42:56.066927Z",
+  "protocolCompatibility": {},
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.11/app-arm64-v8a-release.apk",
+      "sha256": "5eeb9158e02fa11810e30a1e2ed7820fe91e37e5f0403f684af6e55f33e97da9"
+    },
+    {
+      "abi": "armeabi-v7a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.11/app-armeabi-v7a-release.apk",
+      "sha256": "6626a5f12ba676ff4b90649a323a7112c5297972e32b7e2feb0825aaa04a0463"
+    },
+    {
+      "abi": "x86_64",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.11/app-x86_64-release.apk",
+      "sha256": "2c8f30c35f0fc2554456b14bb6d2c36a5c539eb8699d9e619ef83936f4d1123f"
+    }
+  ]
+}
