@@ -1,0 +1,29 @@
+{
+  "channel": "stable",
+  "version": "0.4.10",
+  "versionCode": 2014,
+  "minSupportedVersion": "0.1.0",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.10/app-arm64-v8a-release.apk",
+  "sha256": "8b4c781e63a1ad4becec8ee110441948424b90727b775ee68b925ccdb5d0e44f",
+  "signature": "",
+  "releaseNotes": "Release v0.4.10\n\nRelease v0.4.10\n\n- Connect: the Bluetooth scan now shows only TVS scooters, so your ride is easier to spot\n- Navigation: save home, work, and your own spots, then jump to them in one tap\n- Navigation: fixed the distance and arrival time estimates\n- Navigation: the Google Maps mirror switches to the right screen on its own, and dismissing a Maps notification now clears it in Scoot too\n- Diagnostic shell: the mirror check shows whether the maneuver arrow arrived, and can copy the raw notification as JSON",
+  "createdAt": "2026-09-28T12:35:25.094923Z",
+  "protocolCompatibility": {},
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.10/app-arm64-v8a-release.apk",
+      "sha256": "8b4c781e63a1ad4becec8ee110441948424b90727b775ee68b925ccdb5d0e44f"
+    },
+    {
+      "abi": "armeabi-v7a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.10/app-armeabi-v7a-release.apk",
+      "sha256": "aa642ad59dcaeceaaed4600d13db5662807c6278412108e25e91c5ec86bc2fb4"
+    },
+    {
+      "abi": "x86_64",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.4.10/app-x86_64-release.apk",
+      "sha256": "cacfb7f03e9314b2b3937eedc5acd41040164b29432ecfa270aaf90abb94adaf"
+    }
+  ]
+}
