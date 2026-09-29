@@ -1,0 +1,29 @@
+{
+  "channel": "stable",
+  "version": "0.5.0",
+  "versionCode": 2017,
+  "minSupportedVersion": "0.1.0",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.0/app-arm64-v8a-release.apk",
+  "sha256": "310aed2c259d5784fafd8e1e08c09aab922fa89a3733aeff489d810126280307",
+  "signature": "",
+  "releaseNotes": "Release v0.5.0\n\n- Dual navigation: Google Maps stays the default, native Mappls turn-by-turn is now an Advanced option under Settings > Navigation\n- Voice guidance is off by default; enable it in Settings > Navigation for spoken directions\n- Mappls trips show the full upcoming-maneuvers list; the bottom nav card auto-hides when idle\n- Turn pictograms fixed to match the cluster display\n- Saved places fixed: Home, Work and custom spots save reliably, with a new Manage saved places screen\n- Fewer API calls and throttled cluster updates to save battery and data\n- Calls: incoming calls now reach the cluster\n- Connect: Jupiter 125 connects even with a different Bluetooth service ID; Bluetooth scan shows only TVS scooters\n- Trips: resume window default is now 15 minutes; arrival time reads Maps arrival times; cluster holds last known trip distance instead of dropping to 0",
+  "createdAt": "2026-09-29T18:06:50.288828Z",
+  "protocolCompatibility": {},
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.0/app-arm64-v8a-release.apk",
+      "sha256": "310aed2c259d5784fafd8e1e08c09aab922fa89a3733aeff489d810126280307"
+    },
+    {
+      "abi": "armeabi-v7a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.0/app-armeabi-v7a-release.apk",
+      "sha256": "9d3961c4751cc773d7a0fcc231090b70c6508cfaa8fe36ab85c2e5999e8349c0"
+    },
+    {
+      "abi": "x86_64",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.0/app-x86_64-release.apk",
+      "sha256": "5f20ab93312d45670d303bb76e91e6d1cf2edb185a0482c1e9b43c7213688360"
+    }
+  ]
+}
