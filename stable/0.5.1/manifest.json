@@ -1,0 +1,29 @@
+{
+  "channel": "stable",
+  "version": "0.5.1",
+  "versionCode": 2018,
+  "minSupportedVersion": "0.1.0",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.1/app-arm64-v8a-release.apk",
+  "sha256": "61fc2c92a18478ffb51b832a7820ca7bd9d0ee2db9360eb3db84e6e7c47cf45a",
+  "signature": "",
+  "releaseNotes": "Release v0.5.1\n\n- Audit fix batch: R8 keep rule for the Mappls ExcludeShim, gmaps avoid-mode handoff starts navigation directly, parking + trip detail maps honor the saved tile style\n- Diagnostics shell teardown: old phase-one shell removed, link health + raw frame bytes moved to Technical telemetry\n- Test cleanup: dropped shell/panel tests, merged sort-chip layout test\n- What's new entries for v0.5.1",
+  "createdAt": "2026-09-29T21:01:44.167320Z",
+  "protocolCompatibility": {},
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.1/app-arm64-v8a-release.apk",
+      "sha256": "61fc2c92a18478ffb51b832a7820ca7bd9d0ee2db9360eb3db84e6e7c47cf45a"
+    },
+    {
+      "abi": "armeabi-v7a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.1/app-armeabi-v7a-release.apk",
+      "sha256": "a542dba07d7aeba7b04ee87a4321b36ea9f276e1e2a99677be75c1da8f97f1bb"
+    },
+    {
+      "abi": "x86_64",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.1/app-x86_64-release.apk",
+      "sha256": "cee282f9745a2aa2c9936437b26cd8e6967b85076a3afcc212733323ac903c0a"
+    }
+  ]
+}
