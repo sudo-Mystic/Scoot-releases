@@ -14,9 +14,9 @@ This is the Windows twin of jupiter-ble-bridge.py (Linux/BlueZ). The
 WebSocket wire protocol is IDENTICAL (same WsHub logic, embedded below),
 so the sim webapp cannot tell which bridge it is talking to. Only the
 BLE layer differs: Windows has no D-Bus/BlueZ, so the GATT server is
-built on the WinRT GattServiceProvider API (package: winrt-runtime) plus a
-BluetoothLEAdvertisementPublisher for the "Jupiter-SIM" advertisement
-carrying the real Jupiter service UUID. This file is fully standalone:
+built on the WinRT GattServiceProvider API (package: winrt-runtime), which
+advertises the real Jupiter service UUID itself via start_advertising().
+This file is fully standalone:
 it needs no other files from the repo and can be renamed freely.
 
 SAFETY BOUNDARY (non-negotiable, same as the Linux bridge):
@@ -74,7 +74,6 @@ log = logging.getLogger("jupiter-ble-bridge")
 SERVICE_UUID = "5456534D-5647-5341-5342-454E544F5251"
 WRITE_CHAR_UUID = "00005352-0000-1000-8000-00805f9b34fb"
 NOTIFY_CHAR_UUID = "00005354-0000-1000-8000-00805f9b34fb"
-LOCAL_NAME = "Jupiter-SIM"
 
 FRAME_LEN = 20
 NOTIFY_MIN_INTERVAL_S = 0.02  # <=50 Hz notify rate
@@ -320,26 +319,24 @@ async def stats_loop(hub: WsHub) -> None:
 def _require_winrt():
     try:
         from winrt.windows.devices.bluetooth import BluetoothAdapter, BluetoothError
-        from winrt.windows.devices.bluetooth.advertisement import (
-            BluetoothLEAdvertisementPublisher,
-            BluetoothLEAdvertisementPublisherStatus,
-        )
         from winrt.windows.devices.bluetooth.genericattributeprofile import (
             GattCharacteristicProperties,
             GattLocalCharacteristicParameters,
             GattProtectionLevel,
             GattServiceProvider,
+            GattServiceProviderAdvertisementStatus,
+            GattServiceProviderAdvertisingParameters,
         )
         from winrt.windows.storage.streams import DataReader, DataWriter
         return {
             "BluetoothAdapter": BluetoothAdapter,
             "BluetoothError": BluetoothError,
-            "BluetoothLEAdvertisementPublisher": BluetoothLEAdvertisementPublisher,
-            "BluetoothLEAdvertisementPublisherStatus": BluetoothLEAdvertisementPublisherStatus,
             "GattCharacteristicProperties": GattCharacteristicProperties,
             "GattLocalCharacteristicParameters": GattLocalCharacteristicParameters,
             "GattProtectionLevel": GattProtectionLevel,
             "GattServiceProvider": GattServiceProvider,
+            "GattServiceProviderAdvertisementStatus": GattServiceProviderAdvertisementStatus,
+            "GattServiceProviderAdvertisingParameters": GattServiceProviderAdvertisingParameters,
             "DataReader": DataReader,
             "DataWriter": DataWriter,
         }
@@ -402,7 +399,7 @@ def _bytes_from_ibuffer(winrt, buf) -> bytes:
 
 class _WinBleServer:
     """WinRT GATT server: Jupiter service + write/notify characteristics,
-    plus a BLE advertisement as LOCAL_NAME carrying SERVICE_UUID.
+    advertising the service UUID via the provider's start_advertising().
 
     One instance per BLE session; created inside ble_task() after the lazy
     winrt import.
@@ -415,7 +412,6 @@ class _WinBleServer:
         self._provider = None
         self._write_char = None
         self._notify_char = None
-        self._publisher = None
         self._tokens = []
         self._subscribed = False
 
@@ -480,53 +476,32 @@ class _WinBleServer:
         )
         log.info("notify characteristic ready (%s)", NOTIFY_CHAR_UUID)
 
-        # Advertisement: local name + service UUID, like the BlueZ one.
-        # "Jupiter-SIM" (11 chars) + a 128-bit service UUID sits at exactly
-        # 31 bytes, the legacy advertising limit; some Windows stacks reject
-        # Start() with E_INVALIDARG instead of truncating. Fall back through
-        # smaller payloads: the phone scans by service UUID, so the name is
-        # cosmetic.
-        attempts = (("local name + service UUID", True), ("service UUID only", False))
-        for desc, with_name in attempts:
-            self._publisher = w["BluetoothLEAdvertisementPublisher"]()
-            adv = self._publisher.advertisement
-            if with_name:
-                adv.local_name = LOCAL_NAME
-            adv.service_uuids.append(UUID(SERVICE_UUID))
-            try:
-                log.info("BLE: starting publisher (%s) ...", desc)
-                self._publisher.start()
-                break
-            except OSError as exc:
-                last = with_name is False
-                if getattr(exc, "winerror", None) != -2147024809 or last:
-                    raise
-                log.warning(
-                    "BLE: advertisement (%s) rejected by the radio "
-                    "(E_INVALIDARG); retrying with a smaller payload", desc,
-                )
-        else:
-            raise RuntimeError("advertisement failed")
-        if with_name:
-            log.info("advertising as %r with service UUID %s", LOCAL_NAME, SERVICE_UUID)
-        else:
-            log.info(
-                "advertising service UUID %s (no local name: radio rejected "
-                "the full 31-byte payload)", SERVICE_UUID,
-            )
-        if self._publisher.status != w["BluetoothLEAdvertisementPublisherStatus"].STARTED:
+        # Advertisement: via the GATT provider's own start_advertising() (the
+        # documented path for a GATT server). The standalone
+        # BluetoothLEAdvertisementPublisher is deliberately NOT used: its
+        # Start() throws E_INVALIDARG on some Windows stacks even for tiny
+        # payloads. The provider advertisement carries the service UUID
+        # (connectable + discoverable); the Scoot app scans unfiltered and
+        # keys off the advertised service UUID, so no local name is needed.
+        aparams = w["GattServiceProviderAdvertisingParameters"]()
+        aparams.is_connectable = True
+        aparams.is_discoverable = True
+        log.info("BLE: starting GATT service advertisement ...")
+        self._provider.start_advertising(aparams)
+        astatus = self._provider.advertisement_status
+        if astatus != w["GattServiceProviderAdvertisementStatus"].STARTED:
             raise RuntimeError(
                 "BLE advertisement did not start (status=%s). Does this PC's "
-                "Bluetooth radio support BLE peripheral mode?" % self._publisher.status
+                "Bluetooth radio support BLE peripheral mode?" % astatus
             )
+        log.info("advertising GATT service %s (connectable, discoverable)", SERVICE_UUID)
 
     async def stop(self) -> None:
-        if self._publisher is not None:
+        if self._provider is not None:
             try:
-                self._publisher.stop()
+                self._provider.stop_advertising()
             except Exception:
                 pass
-            self._publisher = None
         self._provider = None
         self._write_char = None
         self._notify_char = None

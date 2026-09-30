@@ -12,6 +12,5 @@ winrt-runtime
 # The [all] extra pulls each namespace's cross-dependencies (Foundation,
 # Foundation.Collections, ...) which are NOT installed by default.
 winrt-Windows.Devices.Bluetooth[all]
-winrt-Windows.Devices.Bluetooth.Advertisement[all]
 winrt-Windows.Devices.Bluetooth.GenericAttributeProfile[all]
 winrt-Windows.Storage.Streams[all]
