@@ -57,6 +57,7 @@ import json
 import logging
 import sys
 import time
+import traceback
 from uuid import UUID
 
 from websockets import Headers, Request, Response
@@ -481,9 +482,12 @@ class _WinBleServer:
 
         # Advertisement: local name + service UUID, like the BlueZ one.
         self._publisher = w["BluetoothLEAdvertisementPublisher"]()
+        log.info("BLE: publisher created, setting local name ...")
         adv = self._publisher.advertisement
         adv.local_name = LOCAL_NAME
+        log.info("BLE: local name set, adding service UUID ...")
         adv.service_uuids.append(UUID(SERVICE_UUID))
+        log.info("BLE: service UUID added, starting publisher ...")
         self._publisher.start()
         if self._publisher.status != w["BluetoothLEAdvertisementPublisherStatus"].STARTED:
             raise RuntimeError(
@@ -581,7 +585,10 @@ async def ble_task(hub: WsHub, args) -> None:
         except asyncio.CancelledError:
             raise
         except Exception as exc:
-            log.error("BLE session ended (%s); restarting in %.0fs ...", exc, backoff)
+            log.error(
+                "BLE session ended (%s); restarting in %.0fs ...\n%s",
+                exc, backoff, traceback.format_exc(),
+            )
             await asyncio.sleep(backoff)
             backoff = min(backoff * 2, 60.0)
         finally:
