@@ -924,15 +924,25 @@ function drawRide(g, args) {
   g.fillStyle = T.bgSunken;
   g.fillRect(0, 0, W, H);
 
-  // Big speed, mono, center-left.
+  // Big speed, mono, centered in the clear zone between the data columns.
+  // Auto-fits: three-digit speeds shrink instead of bleeding into the
+  // ODO/trip column (x < 150) or the fuel/temp column (x > 325).
   const speed = Math.max(0, Math.round(st.speedKmh));
-  txt(g, String(speed), 150, 178, {
-    font: `700 148px ${mono}`,
+  const SPEED_CX = 237;
+  const SPEED_MAXW = 175;
+  let speedPx = 130;
+  g.save();
+  g.font = `700 ${speedPx}px ${mono}`;
+  const speedW = g.measureText(String(speed)).width + 4; // + letter spacing
+  if (speedW > SPEED_MAXW) speedPx = Math.max(44, Math.floor((speedPx * SPEED_MAXW) / speedW));
+  g.restore();
+  txt(g, String(speed), SPEED_CX, 178, {
+    font: `700 ${speedPx}px ${mono}`,
     color: st.vehicleOff ? T.textFaint : T.text,
     align: 'center',
     spacing: 2,
   });
-  txt(g, 'km/h', 150, 208, { font: `12px ${mono}`, color: T.textDim, align: 'center', spacing: 6 });
+  txt(g, 'km/h', SPEED_CX, 208, { font: `12px ${mono}`, color: T.textDim, align: 'center', spacing: 6 });
 
   // Left data column: odo, trips.
   let ly = 78;
@@ -996,7 +1006,7 @@ function drawRide(g, args) {
     });
   }
   if (st.powerMode || st.ecoMode) {
-    txt(g, st.powerMode ? 'POWER' : 'ECO', 150, 258, {
+    txt(g, st.powerMode ? 'POWER' : 'ECO', SPEED_CX, 258, {
       font: `700 13px ${mono}`,
       color: T.accent,
       align: 'center',

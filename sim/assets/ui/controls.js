@@ -194,7 +194,7 @@ export function mount(rootEl, ctx) {
     <div class="cd-status" aria-live="polite"><span class="at num">--:--:--</span> <span class="msg">Deck ready.</span></div>
 
     <div class="cd-section" data-sec="link">
-      <div class="cd-sec-head"><span class="t">Connection</span><span class="n">phone app via bridge</span></div>
+      <div class="cd-sec-head"><span class="t">Connection</span> <span class="n">phone app via bridge</span></div>
       <div class="cd-grid">
         <div class="cd-row">
           <label class="field" for="cd-bridge-url">Bridge URL</label>
@@ -223,7 +223,7 @@ export function mount(rootEl, ctx) {
     </div>
 
     <div class="cd-section" data-sec="key">
-      <div class="cd-sec-head"><span class="t">Key and ride</span><span class="n">physical controls</span></div>
+      <div class="cd-sec-head"><span class="t">Key and ride</span> <span class="n">physical controls</span></div>
       <div class="cd-grid">
         <div class="cd-row">
           <label class="cd-key">
@@ -250,7 +250,7 @@ export function mount(rootEl, ctx) {
     </div>
 
     <div class="cd-section" data-sec="vehicle">
-      <div class="cd-sec-head"><span class="t">Vehicle state</span><span class="n">sim model inputs</span></div>
+      <div class="cd-sec-head"><span class="t">Vehicle state</span> <span class="n">sim model inputs</span></div>
       <div class="cd-grid">
         <div class="cd-row">
           <label class="field" for="cd-fuel">Fuel in tank</label>
@@ -275,7 +275,7 @@ export function mount(rootEl, ctx) {
     </div>
 
     <div class="cd-section" data-sec="trips">
-      <div class="cd-sec-head"><span class="t">Trips</span><span class="n"><span class="sim">sim side</span></span></div>
+      <div class="cd-sec-head"><span class="t">Trips</span> <span class="n"><span class="sim">sim side</span></span></div>
       <div class="cd-btn-row">
         <button class="btn" id="cd-trip-a" type="button">Reset trip A</button>
         <button class="btn" id="cd-trip-b" type="button">Reset trip B</button>
@@ -284,7 +284,7 @@ export function mount(rootEl, ctx) {
     </div>
 
     <div class="cd-section" data-sec="diag">
-      <div class="cd-sec-head"><span class="t">Diagnostics</span><span class="n">faults and sensors</span></div>
+      <div class="cd-sec-head"><span class="t">Diagnostics</span> <span class="n">faults and sensors</span></div>
       <div class="cd-grid">
         <div class="cd-row">
           <label class="field" for="cd-dtc">Fault code</label>
@@ -318,7 +318,7 @@ export function mount(rootEl, ctx) {
     </div>
 
     <div class="cd-section" data-sec="cluster">
-      <div class="cd-sec-head"><span class="t">Cluster buttons</span><span class="n">handlebar and call</span></div>
+      <div class="cd-sec-head"><span class="t">Cluster buttons</span> <span class="n">handlebar and call</span></div>
       <div class="cd-grid">
         <div class="cd-row">
           <span class="field">Music (sends 0x6B)</span>
@@ -356,7 +356,7 @@ export function mount(rootEl, ctx) {
     </div>
 
     <div class="cd-section" data-sec="route">
-      <div class="cd-sec-head"><span class="t">Route playback</span><span class="n">speed profile driver</span></div>
+      <div class="cd-sec-head"><span class="t">Route playback</span> <span class="n">speed profile driver</span></div>
       <div class="cd-grid-1">
         <div class="cd-row">
           <label class="field" for="cd-route-text">Waypoints, one lat,lng per line</label>
