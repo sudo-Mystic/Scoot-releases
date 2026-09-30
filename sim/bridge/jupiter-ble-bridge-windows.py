@@ -318,7 +318,7 @@ async def stats_loop(hub: WsHub) -> None:
 
 def _require_winrt():
     try:
-        from winrt.windows.devices.bluetooth import BluetoothError
+        from winrt.windows.devices.bluetooth import BluetoothAdapter, BluetoothError
         from winrt.windows.devices.bluetooth.advertisement import (
             BluetoothLEAdvertisementPublisher,
             BluetoothLEAdvertisementPublisherStatus,
@@ -331,6 +331,7 @@ def _require_winrt():
         )
         from winrt.windows.storage.streams import DataReader, DataWriter
         return {
+            "BluetoothAdapter": BluetoothAdapter,
             "BluetoothError": BluetoothError,
             "BluetoothLEAdvertisementPublisher": BluetoothLEAdvertisementPublisher,
             "BluetoothLEAdvertisementPublisherStatus": BluetoothLEAdvertisementPublisherStatus,
@@ -345,9 +346,44 @@ def _require_winrt():
         log.error(
             "FATAL: the 'winrt' module is not installed. "
             "Run: pip install -r requirements-windows.txt "
-            "(or: pip install winrt-runtime websockets)."
+            "(or: pip install winrt-runtime websockets "
+            "winrt-Windows.Devices.Bluetooth[all] "
+            "winrt-Windows.Devices.Bluetooth.Advertisement[all] "
+            "winrt-Windows.Devices.Bluetooth.GenericAttributeProfile[all] "
+            "winrt-Windows.Storage.Streams[all])."
         )
         sys.exit(2)
+
+
+# BluetoothError codes, so a failed create_async logs a name and a hint
+# instead of a bare number.
+_BT_ERROR_NAMES = {
+    0: "Success",
+    1: "RadioNotAvailable",
+    2: "ResourceInUse",
+    3: "DeviceNotConnected",
+    4: "OtherError",
+    5: "DisabledByPolicy",
+    6: "NotSupported",
+    7: "DisabledByUser",
+    8: "ConsentRequired",
+    9: "TransportNotSupported",
+}
+_BT_ERROR_HINTS = {
+    1: "The Bluetooth radio is not available to Windows. Turn Bluetooth ON "
+       "in Windows Settings and make sure Airplane mode is off.",
+    5: "Blocked by system policy on this PC.",
+    6: "Not supported by this Bluetooth radio/driver.",
+    7: "Bluetooth was disabled by the user. Turn it back on in Windows Settings.",
+}
+
+
+def _bt_error_name(err) -> str:
+    try:
+        code = int(err)
+    except (TypeError, ValueError):
+        return str(err)
+    return "%s (%d)" % (_BT_ERROR_NAMES.get(code, "Unknown"), code)
 
 
 def _ibuffer_from_bytes(winrt, data: bytes):
@@ -386,9 +422,29 @@ class _WinBleServer:
 
     async def start(self) -> None:
         w = self._winrt
+        # Fail fast with a useful message instead of a bare error code.
+        adapter = await w["BluetoothAdapter"].get_default_async()
+        if adapter is None:
+            raise RuntimeError(
+                "no default Bluetooth adapter found. Turn Bluetooth ON in "
+                "Windows Settings (and switch Airplane mode off)."
+            )
+        peripheral_ok = getattr(adapter, "is_peripheral_role_supported", None)
+        if peripheral_ok is False:
+            raise RuntimeError(
+                "this PC's Bluetooth radio does not support BLE peripheral "
+                "mode, so the phone can never see the Jupiter-SIM advertisement "
+                "from this PC. Options: a USB BLE dongle with peripheral-mode "
+                "support, or run the Linux bridge on a machine whose radio "
+                "supports it."
+            )
         result = await w["GattServiceProvider"].create_async(UUID(SERVICE_UUID))
         if result.error != w["BluetoothError"].SUCCESS:
-            raise RuntimeError("GattServiceProvider.create_async failed: %s" % result.error)
+            hint = _BT_ERROR_HINTS.get(int(result.error), "")
+            raise RuntimeError(
+                "GattServiceProvider.create_async failed: %s. %s"
+                % (_bt_error_name(result.error), hint)
+            )
         self._provider = result.service_provider
         log.info("GATT service provider created (service %s)", SERVICE_UUID)
 
