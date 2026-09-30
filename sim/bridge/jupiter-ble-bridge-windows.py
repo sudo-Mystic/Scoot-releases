@@ -14,7 +14,7 @@ This is the Windows twin of jupiter-ble-bridge.py (Linux/BlueZ). The
 WebSocket wire protocol is IDENTICAL (same WsHub logic, embedded below),
 so the sim webapp cannot tell which bridge it is talking to. Only the
 BLE layer differs: Windows has no D-Bus/BlueZ, so the GATT server is
-built on the WinRT GattServiceProvider API (package: winrt) plus a
+built on the WinRT GattServiceProvider API (package: winrt-runtime) plus a
 BluetoothLEAdvertisementPublisher for the "Jupiter-SIM" advertisement
 carrying the real Jupiter service UUID. This file is fully standalone:
 it needs no other files from the repo and can be renamed freely.
@@ -43,7 +43,7 @@ Wire protocol (exact, the webapp transport and verifier depend on it):
   GET /health (same port, plain HTTP) -> {"ok":true,"ble":true|false}.
 
 Prerequisites (Windows 10+, Bluetooth radio with BLE peripheral support):
-  pip install -r requirements-windows.txt   (websockets + winrt)
+  pip install -r requirements-windows.txt   (websockets + winrt-runtime)
 
 Run:  python .\\jupiter-ble-bridge-windows.py [--host 0.0.0.0] [--port 8765] [--no-ble]
 """
@@ -342,8 +342,9 @@ def _require_winrt():
         }
     except ImportError:
         log.error(
-            "FATAL: the 'winrt' package is not installed. "
-            "Run: pip install -r requirements-windows.txt (or pip install winrt websockets)."
+            "FATAL: the 'winrt' module is not installed. "
+            "Run: pip install -r requirements-windows.txt "
+            "(or: pip install winrt-runtime websockets)."
         )
         sys.exit(2)
 

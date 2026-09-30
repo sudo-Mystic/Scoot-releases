@@ -1,10 +1,12 @@
 # Bridge dependencies for Windows (jupiter-ble-bridge-windows.py).
 # Install: pip install -r requirements-windows.txt
 #   websockets: WS layer (shared with the Linux bridge).
-#   winrt: Windows Runtime projections; provides the WinRT
-#     GattServiceProvider GATT server + BLE advertisement publisher
-#     used by jupiter-ble-bridge-windows.py. Windows 10+ only.
+#   winrt-runtime: Windows Runtime projections (the maintained successor
+#     of the dead 'winrt' 1.0.x package, which has no wheels for modern
+#     Python); provides the WinRT GattServiceProvider GATT server + BLE
+#     advertisement publisher used by jupiter-ble-bridge-windows.py.
+#     Windows 10+ only.
 # NOTE: dbus-next (the Linux bridge's BlueZ dependency) does NOT work on
 # Windows. Do not try to install it there; use this file instead.
 websockets>=17.1
-winrt
+winrt-runtime
