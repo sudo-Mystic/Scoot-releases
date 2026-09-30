@@ -427,6 +427,7 @@ class _WinBleServer:
                 "Windows Settings (and switch Airplane mode off)."
             )
         peripheral_ok = getattr(adapter, "is_peripheral_role_supported", None)
+        log.info("BLE: adapter peripheral-role supported: %s", peripheral_ok)
         if peripheral_ok is False:
             raise RuntimeError(
                 "this PC's Bluetooth radio does not support BLE peripheral "
@@ -493,9 +494,21 @@ class _WinBleServer:
         self._provider.start_advertising_with_parameters(aparams)
         astatus = self._provider.advertisement_status
         if astatus != w["GattServiceProviderAdvertisementStatus"].STARTED:
+            # WinRT enum order: Created=0, Stopped=1, Started=2, Aborted=3.
+            status_name = {0: "Created", 1: "Stopped", 3: "Aborted"}.get(
+                int(astatus), str(astatus)
+            )
             raise RuntimeError(
-                "BLE advertisement did not start (status=%s). Does this PC's "
-                "Bluetooth radio support BLE peripheral mode?" % astatus
+                "BLE advertisement %s (status=%s): this PC's Bluetooth radio "
+                "refused to transmit the advertisement, so the phone can never "
+                "discover the simulated scooter from this PC. This is a "
+                "radio/driver limitation, not a bridge bug: the GATT server "
+                "itself was created fine. Things to try, in order: (1) update "
+                "the Bluetooth driver in Device Manager; (2) use a USB BLE "
+                "dongle with peripheral-mode support (cheap CSR/Broadcom "
+                "ones work); (3) run the Linux bridge on a machine whose "
+                "radio supports BLE advertising."
+                % (status_name, astatus)
             )
         log.info("advertising GATT service %s (connectable, discoverable)", SERVICE_UUID)
 
