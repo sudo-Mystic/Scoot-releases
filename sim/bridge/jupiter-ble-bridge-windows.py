@@ -43,7 +43,8 @@ Wire protocol (exact, the webapp transport and verifier depend on it):
   GET /health (same port, plain HTTP) -> {"ok":true,"ble":true|false}.
 
 Prerequisites (Windows 10+, Bluetooth radio with BLE peripheral support):
-  pip install -r requirements-windows.txt   (websockets + winrt-runtime)
+  pip install -r requirements-windows.txt   (websockets + winrt-runtime
+                                             + the winrt-Windows.* namespace packages)
 
 Run:  python .\\jupiter-ble-bridge-windows.py [--host 0.0.0.0] [--port 8765] [--no-ble]
 """
