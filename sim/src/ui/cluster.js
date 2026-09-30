@@ -275,7 +275,7 @@ function readEngineState(engine) {
     return undefined;
   };
   return {
-    speedKmh: _num(g('speedKmh', 'speed', 'speed_kmh'), 0),
+    speedKmh: _num(g('speedKmh', 'speedKph', 'speed', 'speed_kmh'), 0),
     odoKm: _num(g('odometerKm', 'odoKm', 'odometer', 'odo'), 0),
     tripAKm: _num(g('tripAKm', 'tripA', 'trip_a'), NaN),
     tripBKm: _num(g('tripBKm', 'tripB', 'trip_b'), NaN),
@@ -293,6 +293,9 @@ function readEngineState(engine) {
     clock: g('clock', 'time', 'date'),
     powerMode: !!g('powerMode'),
     ecoMode: !!g('ecoMode'),
+    // Malfunction indicator: the engine latches injected DTCs in `dtcs`.
+    dtcCount: Array.isArray(g('dtcs')) ? g('dtcs').length : 0,
+    milOn: Array.isArray(g('dtcs')) ? g('dtcs').length > 0 : !!g('milOn', 'mil'),
   };
 }
 
@@ -963,8 +966,30 @@ function drawRide(g, args) {
     spacing: 1,
   });
   g.restore();
+  // Malfunction indicator lamp: steady amber while the engine has latched
+  // DTCs (injected from the Controls deck or the Fault injection scenario).
+  // Drawn ghosted when clear so the lamp position never jumps around.
+  const milOn = !!st.milOn;
+  g.save();
+  g.beginPath();
+  g.roundRect(rx, 246, 120, 26, 13);
+  if (milOn) {
+    g.fillStyle = T.warn;
+    g.fill();
+  } else {
+    g.strokeStyle = T.line;
+    g.lineWidth = 1.5;
+    g.stroke();
+  }
+  txt(g, milOn && st.dtcCount > 1 ? 'MIL x' + st.dtcCount : 'MIL', rx + 60, 264, {
+    font: `700 12px ${mono}`,
+    color: milOn ? T.bg : T.textFaint,
+    align: 'center',
+    spacing: 2,
+  });
+  g.restore();
   if (st.gear) {
-    txt(g, 'GEAR ' + String(st.gear).toUpperCase(), rx + 60, 258, {
+    txt(g, 'GEAR ' + String(st.gear).toUpperCase(), rx + 60, 288, {
       font: `700 15px ${mono}`,
       color: T.text,
       align: 'center',
