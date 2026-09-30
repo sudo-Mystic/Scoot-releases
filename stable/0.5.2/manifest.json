@@ -1,0 +1,29 @@
+{
+  "channel": "stable",
+  "version": "0.5.2",
+  "versionCode": 2019,
+  "minSupportedVersion": "0.1.0",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.2/app-arm64-v8a-release.apk",
+  "sha256": "e2a6618f1bfa19bd298316c2d4a6d5c0ba3289d56ae6151639349b2d4ab99785",
+  "signature": "",
+  "releaseNotes": "Release v0.5.2\n\n- Calls: fixed incoming-call alerts never reaching the cluster. The caller name and number now come from the call notification itself, so no extra permission is needed.\n- Alerts: the Alerts tab is now a proper call-alerts screen with live status and one-tap fixes, the alert toggles, and the missed-call count.\n- Removed the developer console from the Alerts tab (raw packet sender and test buttons).",
+  "createdAt": "2026-09-30T18:15:50.551624Z",
+  "protocolCompatibility": {},
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.2/app-arm64-v8a-release.apk",
+      "sha256": "e2a6618f1bfa19bd298316c2d4a6d5c0ba3289d56ae6151639349b2d4ab99785"
+    },
+    {
+      "abi": "armeabi-v7a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.2/app-armeabi-v7a-release.apk",
+      "sha256": "0fec794269f3fee957a0f64983d4d529296de9141d4f6f5c0b2f34255c3d0bbb"
+    },
+    {
+      "abi": "x86_64",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.2/app-x86_64-release.apk",
+      "sha256": "aa1bcf10ee40dcd574e6ffe811834c8b04fc8c8e5e6f093441da44bab5576fa2"
+    }
+  ]
+}
