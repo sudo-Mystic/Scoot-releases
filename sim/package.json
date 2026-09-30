@@ -1,0 +1,1 @@
+{"description":"Scoot Scooter Simulator: hidden BLE test bench for the Scoot Flutter app (internal dev instrument, not user-facing)","devDependencies":{"vite":"^5.4.0"},"name":"scoot-sim","private":true,"scripts":{"build":"vite build","dev":"vite","preview":"vite preview"},"type":"module","version":"0.1.0"}

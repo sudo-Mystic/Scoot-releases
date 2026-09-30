@@ -1,0 +1,9 @@
+# Bridge dependencies.
+# Install: pip install -r requirements.txt
+#   bleak: used by verify_bridge.py (BLE central side verifier).
+#   websockets: WS layer of jupiter-ble-bridge.py + verify_bridge.py client.
+#   dbus-next: BlueZ D-Bus GATT server in jupiter-ble-bridge.py.
+# Minimum versions are the ones the bridge was tested against.
+bleak
+websockets>=17.1
+dbus-next>=0.2.3

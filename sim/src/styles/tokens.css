@@ -1,0 +1,49 @@
+/* Design tokens for the Scoot Scooter Simulator cockpit.
+ *
+ * Palette lock (see CONTRACT.md): this file is the single source of truth for
+ * the accent color. Every accent in the app must reference --accent.
+ * Do not introduce a second accent color anywhere.
+ */
+
+:root {
+  /* ---- surfaces (single dark theme, locked) ---- */
+  --bg: #0b0d08;            /* cockpit base, near-black warm neutral */
+  --bg-raise: #11140c;      /* raised panel surface */
+  --bg-sunken: #070806;     /* recessed areas, canvas backdrops */
+  --line: #23281a;          /* 1px dividers */
+  --line-strong: #39411f;   /* emphasized rules */
+
+  /* ---- the one accent: volt lime ---- */
+  --accent: #c8ff00;
+  --accent-dim: #8fae00;    /* muted accent for secondary marks */
+  --accent-ink: #141a00;    /* text/labels placed on accent fills */
+
+  /* ---- text ---- */
+  --text: #e4e9d4;
+  --text-dim: #9aa183;
+  --text-faint: #5c6349;
+
+  /* ---- status ---- */
+  --ok: #7dff6a;
+  --warn: #ffc24a;
+  --bad: #ff5d5d;
+
+  /* ---- type ---- */
+  --font-mono: ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* ---- layout ---- */
+  --radius: 6px;
+  --pad: 12px;
+  --topbar-h: 48px;
+  --statusbar-h: 28px;
+}
+
+/* z-index scale: system layers only, never arbitrary per-component values */
+:root {
+  --z-canvas: 1;
+  --z-panel: 10;
+  --z-overlay: 50;
+  --z-toast: 60;
+}

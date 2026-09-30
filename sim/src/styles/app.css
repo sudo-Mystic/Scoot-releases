@@ -1,0 +1,310 @@
+/* Shell layout for the Scoot Scooter Simulator cockpit.
+ *
+ * Dark-tech instrument aesthetic. High visual density: mono numerals,
+ * 1px dividers, no card soup. One volt-lime accent, referenced only
+ * through tokens.css variables.
+ */
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* numerals are always mono */
+.num, [data-num], .value, output {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- top bar ---------- */
+.topbar {
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-raise);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-panel);
+}
+
+.topbar .brand {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.topbar .brand .dot {
+  color: var(--accent);
+}
+
+.topbar .tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.topbar .spacer { flex: 1; }
+.topbar, .statusbar { white-space: nowrap; }
+
+/* link status pill (transport) */
+.link-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.link-pill .led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-faint);
+}
+
+.link-pill[data-state="connected"] { color: var(--accent); border-color: var(--line-strong); }
+.link-pill[data-state="connected"] .led { background: var(--accent); }
+
+.link-pill[data-state="connecting"] .led {
+  background: var(--warn);
+}
+
+.link-pill[data-state="error"] { color: var(--bad); }
+.link-pill[data-state="error"] .led { background: var(--bad); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .link-pill[data-state="connecting"] .led {
+    animation: led-blink 1s steps(2, start) infinite;
+  }
+  .led[data-blink] {
+    animation: led-blink 1.2s steps(2, start) infinite;
+  }
+}
+
+@keyframes led-blink {
+  50% { opacity: 0.25; }
+}
+
+/* ---------- cockpit grid ---------- */
+.cockpit {
+  display: grid;
+  grid-template-columns: minmax(340px, 420px) 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "cluster controls"
+    "cluster scenarios"
+    "lab     lab";
+  gap: 1px;
+  background: var(--line);
+  border-bottom: 1px solid var(--line);
+  min-height: calc(100dvh - var(--topbar-h) - var(--statusbar-h));
+}
+
+.panel {
+  background: var(--bg);
+  min-width: 0;
+  padding: var(--pad);
+}
+
+.panel[data-panel="cluster"]    { grid-area: cluster; }
+.panel[data-panel="controls"]   { grid-area: controls; }
+.panel[data-panel="scenarios"]  { grid-area: scenarios; }
+.panel[data-panel="lab"]        { grid-area: lab; }
+
+.panel + .panel { /* gaps are 1px dividers via the grid background */ }
+
+/* panel headers: small mono label + rule, no eyebrow stacking */
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.panel-head .hint {
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+/* ---------- status bar ---------- */
+.statusbar {
+  height: var(--statusbar-h);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  border-top: 1px solid var(--line);
+  background: var(--bg-raise);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  position: sticky;
+  bottom: 0;
+  z-index: var(--z-panel);
+}
+
+.statusbar .spacer { flex: 1; }
+.statusbar .accent { color: var(--accent); }
+
+/* ---------- shared primitives ---------- */
+.btn {
+  appearance: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: var(--bg-raise);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 7px 12px;
+  cursor: pointer;
+}
+
+.btn:hover { border-color: var(--accent-dim); }
+.btn:active { transform: scale(0.98); }
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
+.btn[disabled] {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.btn:focus-visible,
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* key/value readouts */
+.kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.kv dt {
+  color: var(--text-faint);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  align-self: center;
+}
+
+.kv dd {
+  margin: 0;
+  color: var(--text);
+  text-align: right;
+}
+
+label.field {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+input[type="text"], input[type="number"], select {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text);
+  background: var(--bg-sunken);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 6px 8px;
+  width: 100%;
+}
+
+input[type="range"] { accent-color: var(--accent); }
+
+/* placeholder / helper text must stay readable on the dark inputs */
+input::placeholder, textarea::placeholder {
+  color: var(--text-dim);
+  opacity: 1;
+}
+
+/* placeholder text when a panel module has not landed yet */
+.panel-missing {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 0;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 767px) {  .cockpit {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "cluster"
+      "controls"
+      "scenarios"
+      "lab";
+  }
+  /* Cluster canvas keeps a minimum readable width on small screens; the
+     panel scrolls horizontally instead of shrinking HUD text below 9px. */
+  [data-mount="cluster"] { overflow-x: auto; }
+  [data-mount="cluster"] .sim-cluster { min-width: 440px !important; }
+}
+
+/* narrow phones: condense the shell bars to one line */
+@media (max-width: 480px) {
+  .topbar .tag { display: none; }
+  .statusbar > span:last-child { display: none; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

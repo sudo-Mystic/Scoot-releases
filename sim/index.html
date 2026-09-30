@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="Internal BLE test bench for the Scoot app. Not for public use." />
+  <title>Scoot Simulator</title>
+</head>
+<body>
+  <header class="topbar">
+    <span class="brand">Scoot<span class="dot">.</span>sim</span>
+    <span class="tag">scooter bench</span>
+    <span class="spacer"></span>
+    <span id="link-pill" class="link-pill" data-state="connecting">
+      <span class="led"></span><span class="state">connecting</span>
+    </span>
+  </header>
+
+  <main class="cockpit">
+    <section class="panel" data-panel="cluster">
+      <div class="panel-head"><span>Cluster</span><span class="hint">W7</span></div>
+      <div data-mount="cluster"></div>
+    </section>
+    <section class="panel" data-panel="controls">
+      <div class="panel-head"><span>Controls</span><span class="hint">W8</span></div>
+      <div data-mount="controls"></div>
+    </section>
+    <section class="panel" data-panel="scenarios">
+      <div class="panel-head"><span>Scenarios</span><span class="hint">W10</span></div>
+      <div data-mount="scenarios"></div>
+    </section>
+    <section class="panel" data-panel="lab">
+      <div class="panel-head"><span>Telemetry lab</span><span class="hint">W9</span></div>
+      <div data-mount="lab"></div>
+    </section>
+  </main>
+
+  <footer class="statusbar">
+    <span>sim <span class="accent">v0.1.0</span></span>
+    <span id="frame-count" data-num>0 frames</span>
+    <span class="spacer"></span>
+    <span>internal tool, not indexed</span>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
