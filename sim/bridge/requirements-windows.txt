@@ -9,7 +9,9 @@
 # Windows. Do not try to install it there; use this file instead.
 websockets>=17.1
 winrt-runtime
-winrt-Windows.Devices.Bluetooth
-winrt-Windows.Devices.Bluetooth.Advertisement
-winrt-Windows.Devices.Bluetooth.GenericAttributeProfile
-winrt-Windows.Storage.Streams
+# The [all] extra pulls each namespace's cross-dependencies (Foundation,
+# Foundation.Collections, ...) which are NOT installed by default.
+winrt-Windows.Devices.Bluetooth[all]
+winrt-Windows.Devices.Bluetooth.Advertisement[all]
+winrt-Windows.Devices.Bluetooth.GenericAttributeProfile[all]
+winrt-Windows.Storage.Streams[all]
