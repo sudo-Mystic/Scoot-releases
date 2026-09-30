@@ -327,10 +327,12 @@ def _require_winrt():
             GattServiceProviderAdvertisementStatus,
             GattServiceProviderAdvertisingParameters,
         )
+        from winrt.windows.devices.enumeration import DeviceInformation
         from winrt.windows.storage.streams import DataReader, DataWriter
         return {
             "BluetoothAdapter": BluetoothAdapter,
             "BluetoothError": BluetoothError,
+            "DeviceInformation": DeviceInformation,
             "GattCharacteristicProperties": GattCharacteristicProperties,
             "GattLocalCharacteristicParameters": GattLocalCharacteristicParameters,
             "GattProtectionLevel": GattProtectionLevel,
@@ -346,8 +348,8 @@ def _require_winrt():
             "Run: pip install -r requirements-windows.txt "
             "(or: pip install winrt-runtime websockets "
             "winrt-Windows.Devices.Bluetooth[all] "
-            "winrt-Windows.Devices.Bluetooth.Advertisement[all] "
             "winrt-Windows.Devices.Bluetooth.GenericAttributeProfile[all] "
+            "winrt-Windows.Devices.Enumeration[all] "
             "winrt-Windows.Storage.Streams[all])."
         )
         sys.exit(2)
@@ -397,6 +399,45 @@ def _bytes_from_ibuffer(winrt, buf) -> bytes:
     return bytes(raw)
 
 
+async def _pick_adapter(w, want):
+    """Return the BluetoothAdapter to use.
+
+    Enumerates every BT radio on the PC so a USB dongle can be picked
+    explicitly (e.g. --adapter realtek) instead of the built-in radio.
+    Without --adapter, the Windows default adapter is used.
+    """
+    infos = await w["DeviceInformation"].find_all_async(
+        w["BluetoothAdapter"].get_device_selector()
+    )
+    found = []
+    for info in infos:
+        try:
+            adapter = await w["BluetoothAdapter"].from_id_async(info.id)
+        except Exception as exc:
+            log.warning("BLE: skipping radio %r: %s", info.name, exc)
+            continue
+        peripheral = getattr(adapter, "is_peripheral_role_supported", "?")
+        log.info("BLE: radio %r (peripheral_role=%s)", info.name, peripheral)
+        found.append((info.name, adapter))
+    if want:
+        key = want.lower()
+        for name, adapter in found:
+            if key in name.lower():
+                log.info("BLE: using radio %r (--adapter match)", name)
+                return adapter
+        raise RuntimeError(
+            "no Bluetooth radio matches --adapter=%r. Available: %s"
+            % (want, ", ".join(repr(n) for n, _ in found) or "none")
+        )
+    adapter = await w["BluetoothAdapter"].get_default_async()
+    if adapter is None:
+        raise RuntimeError(
+            "no default Bluetooth adapter found. Turn Bluetooth ON in "
+            "Windows Settings (and switch Airplane mode off)."
+        )
+    return adapter
+
+
 class _WinBleServer:
     """WinRT GATT server: Jupiter service + write/notify characteristics,
     advertising the service UUID via the provider's start_advertising().
@@ -405,10 +446,12 @@ class _WinBleServer:
     winrt import.
     """
 
-    def __init__(self, winrt, hub: WsHub, loop: asyncio.AbstractEventLoop):
+    def __init__(self, winrt, hub: WsHub, loop: asyncio.AbstractEventLoop,
+                 adapter_want=None):
         self._winrt = winrt
         self._hub = hub
         self._loop = loop
+        self._adapter_want = adapter_want
         self._provider = None
         self._write_char = None
         self._notify_char = None
@@ -420,12 +463,7 @@ class _WinBleServer:
     async def start(self) -> None:
         w = self._winrt
         # Fail fast with a useful message instead of a bare error code.
-        adapter = await w["BluetoothAdapter"].get_default_async()
-        if adapter is None:
-            raise RuntimeError(
-                "no default Bluetooth adapter found. Turn Bluetooth ON in "
-                "Windows Settings (and switch Airplane mode off)."
-            )
+        adapter = await _pick_adapter(w, self._adapter_want)
         peripheral_ok = getattr(adapter, "is_peripheral_role_supported", None)
         log.info("BLE: adapter peripheral-role supported: %s", peripheral_ok)
         if peripheral_ok is False:
@@ -588,7 +626,7 @@ async def ble_task(hub: WsHub, args) -> None:
     loop = asyncio.get_running_loop()
     backoff = 2.0
     while True:
-        server = _WinBleServer(winrt, hub, loop)
+        server = _WinBleServer(winrt, hub, loop, args.adapter)
         consumer = None
         try:
             await server.start()
@@ -659,6 +697,10 @@ def main() -> None:
     p.add_argument("--port", type=int, default=8765, help="WS listen port (default 8765)")
     p.add_argument("--no-ble", action="store_true",
                    help="run the WebSocket layer only, no WinRT BLE (for testing)")
+    p.add_argument("--adapter", default=None,
+                   help="use the Bluetooth radio whose name contains this text "
+                        "(e.g. --adapter realtek for a USB dongle) instead of "
+                        "the Windows default radio")
     args = p.parse_args()
     try:
         asyncio.run(amain(args))

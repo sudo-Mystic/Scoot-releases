@@ -13,4 +13,5 @@ winrt-runtime
 # Foundation.Collections, ...) which are NOT installed by default.
 winrt-Windows.Devices.Bluetooth[all]
 winrt-Windows.Devices.Bluetooth.GenericAttributeProfile[all]
+winrt-Windows.Devices.Enumeration[all]
 winrt-Windows.Storage.Streams[all]
