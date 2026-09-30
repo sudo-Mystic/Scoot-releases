@@ -924,14 +924,25 @@ function drawRide(g, args) {
   g.fillStyle = T.bgSunken;
   g.fillRect(0, 0, W, H);
 
-  // Big speed, mono, centered in the clear zone between the data columns.
-  // Auto-fits: three-digit speeds shrink instead of bleeding into the
-  // ODO/trip column (x < 150) or the fuel/temp column (x > 325).
+  // Big speed, mono, auto-centered in the measured clear zone between the
+  // data columns. Center and max width come from real text metrics at draw
+  // time, so the digits can never bleed into the ODO/trip column on the
+  // left or the fuel/temp column on the right, whatever the font metrics.
   const speed = Math.max(0, Math.round(st.speedKmh));
-  const SPEED_CX = 237;
-  const SPEED_MAXW = 175;
-  let speedPx = 130;
+  const SPEED_GUTTER = 16;
+  const SPEED_RIGHT = 318; // right column starts at rx=330
   g.save();
+  g.font = `700 22px ${mono}`;
+  const widestValue = Math.max(
+    g.measureText(fmtOdo(st.odoKm) + ' km').width,
+    Number.isFinite(st.tripAKm) ? g.measureText(fmtOdo(st.tripAKm) + ' km').width : 0,
+    Number.isFinite(st.tripBKm) ? g.measureText(fmtOdo(st.tripBKm) + ' km').width : 0,
+    Number.isFinite(st.tripKm) ? g.measureText(fmtOdo(st.tripKm) + ' km').width : 0,
+  );
+  const speedLeft = 18 + widestValue + SPEED_GUTTER;
+  const SPEED_CX = (speedLeft + SPEED_RIGHT) / 2;
+  const SPEED_MAXW = Math.max(80, SPEED_RIGHT - speedLeft);
+  let speedPx = 130;
   g.font = `700 ${speedPx}px ${mono}`;
   const speedW = g.measureText(String(speed)).width + 4; // + letter spacing
   if (speedW > SPEED_MAXW) speedPx = Math.max(44, Math.floor((speedPx * SPEED_MAXW) / speedW));

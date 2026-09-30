@@ -30,12 +30,17 @@ import './styles/app.css';
 const BRIDGE_URL_KEY = 'scoot.bridgeUrl';
 const BRIDGE_URL_DEFAULT = 'ws://192.168.1.1:8765';
 
+// Cache-buster for the @vite-ignore dynamic imports below. Bump whenever a
+// runtime module changes: module scripts are aggressively cached and the
+// specifiers are invisible to Vite's hashed-asset pipeline.
+const MOD_V = '?v=20261001c';
+
 // Panels, in mount order. Each module must export mount(rootEl, ctx).
 const PANELS = [
-  { key: 'cluster',   module: './ui/cluster.js',   owner: 'W7'  },
-  { key: 'controls',  module: './ui/controls.js',  owner: 'W8'  },
-  { key: 'scenarios', module: './ui/scenarios.js', owner: 'W10' },
-  { key: 'lab',       module: './ui/lab.js',       owner: 'W9'  },
+  { key: 'cluster',   module: './ui/cluster.js' + MOD_V,   owner: 'W7'  },
+  { key: 'controls',  module: './ui/controls.js' + MOD_V,  owner: 'W8'  },
+  { key: 'scenarios', module: './ui/scenarios.js' + MOD_V, owner: 'W10' },
+  { key: 'lab',       module: './ui/lab.js' + MOD_V,       owner: 'W9'  },
 ];
 
 async function loadModule(path) {
@@ -91,7 +96,7 @@ async function boot() {
   const ctx = { engine: null, transport: null, bus };
 
   try {
-    const engineMod = await loadModule('./engine/index.js');
+    const engineMod = await loadModule('./engine/index.js' + MOD_V);
     engine = engineMod.createEngine();
     ctx.engine = engine;
   } catch (err) {
@@ -99,7 +104,7 @@ async function boot() {
   }
 
   try {
-    transportModule = await loadModule('./transport.js');
+    transportModule = await loadModule('./transport.js' + MOD_V);
   } catch (err) {
     console.error('[sim] transport module missing (W4); simulator cannot link yet');
   }
