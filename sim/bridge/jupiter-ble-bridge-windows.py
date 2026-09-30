@@ -11,12 +11,13 @@ sim telemetry frames back to the phone.
     phone app  <--BLE GATT-->  this bridge  <--WebSocket-->  sim webapp
 
 This is the Windows twin of jupiter-ble-bridge.py (Linux/BlueZ). The
-WebSocket wire protocol is IDENTICAL (same WsHub class, imported from the
-Linux file), so the sim webapp cannot tell which bridge it is talking to.
-Only the BLE layer differs: Windows has no D-Bus/BlueZ, so the GATT
-server is built on the WinRT GattServiceProvider API (package: winrt)
-plus a BluetoothLEAdvertisementPublisher for the "Jupiter-SIM"
-advertisement carrying the real Jupiter service UUID.
+WebSocket wire protocol is IDENTICAL (same WsHub logic, embedded below),
+so the sim webapp cannot tell which bridge it is talking to. Only the
+BLE layer differs: Windows has no D-Bus/BlueZ, so the GATT server is
+built on the WinRT GattServiceProvider API (package: winrt) plus a
+BluetoothLEAdvertisementPublisher for the "Jupiter-SIM" advertisement
+carrying the real Jupiter service UUID. This file is fully standalone:
+it needs no other files from the repo and can be renamed freely.
 
 SAFETY BOUNDARY (non-negotiable, same as the Linux bridge):
   The bridge emulates the cluster only: telemetry out over BLE notify,
@@ -51,50 +52,265 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-import importlib.util
+import json
 import logging
-import os
 import sys
+import time
 from uuid import UUID
+
+from websockets import Headers, Request, Response
+from websockets.asyncio.server import ServerConnection, serve as ws_serve
 
 log = logging.getLogger("jupiter-ble-bridge")
 
 # --------------------------------------------------------------------------
-# Shared WebSocket hub (identical wire protocol to the Linux bridge).
-# jupiter-ble-bridge.py is imported as a module; its dbus-next dependency
-# is lazy (only touched by ble_supervisor), so importing it on Windows
-# is safe.
+# WebSocket hub: byte-identical wire protocol to the Linux bridge
+# (jupiter-ble-bridge.py). Embedded here so this file is fully
+# standalone: no sibling files, no import tricks, rename-proof.
 # --------------------------------------------------------------------------
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-_LINUX_BRIDGE = os.path.join(_HERE, "jupiter-ble-bridge.py")
+SERVICE_UUID = "5456534D-5647-5341-5342-454E544F5251"
+WRITE_CHAR_UUID = "00005352-0000-1000-8000-00805f9b34fb"
+NOTIFY_CHAR_UUID = "00005354-0000-1000-8000-00805f9b34fb"
+LOCAL_NAME = "Jupiter-SIM"
+
+FRAME_LEN = 20
+NOTIFY_MIN_INTERVAL_S = 0.02  # <=50 Hz notify rate
+NOTIFY_QUEUE_MAX = 512
+STATS_INTERVAL_S = 30.0
+
+# First byte values that mark auth challenge/response frames. These are
+# detected, logged, and DROPPED: the bridge never answers them.
+AUTH_FIRST_BYTES = frozenset({0x9A, 0xF2, 0xF1})
 
 
-def _load_shared():
-    if not os.path.exists(_LINUX_BRIDGE):
-        log.error("FATAL: %s not found next to this script.", _LINUX_BRIDGE)
-        sys.exit(2)
-    spec = importlib.util.spec_from_file_location("jupiter_ble_bridge", _LINUX_BRIDGE)
-    mod = importlib.util.module_from_spec(spec)
-    try:
-        spec.loader.exec_module(mod)
-    except ImportError as exc:
-        log.error("FATAL: shared bridge module needs %s. Run: pip install websockets", exc)
-        sys.exit(2)
-    return mod
-
-
-_base = _load_shared()
-WsHub = _base.WsHub
-stats_loop = _base.stats_loop
-SERVICE_UUID = _base.SERVICE_UUID
-WRITE_CHAR_UUID = _base.WRITE_CHAR_UUID
-NOTIFY_CHAR_UUID = _base.NOTIFY_CHAR_UUID
-LOCAL_NAME = _base.LOCAL_NAME
-FRAME_LEN = _base.FRAME_LEN
 
 
 # --------------------------------------------------------------------------
+# WebSocket layer (no BlueZ dependency; importable for smoke tests)
+# --------------------------------------------------------------------------
+
+class WsHub:
+    """Pairs the BLE side with the single connected sim webapp client.
+
+    BLE writes arrive via publish_ble_write() and go out as binary WS
+    messages. Webapp binary frames arrive in ws_handler() and are queued
+    for BLE notify; the BLE side drains the queue with enqueue/notify.
+    """
+
+    def __init__(self) -> None:
+        self._lock = asyncio.Lock()
+        self._client: ServerConnection | None = None
+        self.ble_link: bool = False
+
+        # webapp -> phone direction: throttled to <=50 Hz, drop-oldest.
+        self.notify_queue: asyncio.Queue[bytes] = asyncio.Queue(maxsize=NOTIFY_QUEUE_MAX)
+        self._last_notify = 0.0
+
+        # Counters for periodic stats logging.
+        self.rx_frames = 0            # BLE write frames received
+        self.rx_forwarded = 0         # forwarded to webapp
+        self.rx_dropped_no_client = 0
+        self.rx_dropped_bad_len = 0
+        self.tx_frames = 0            # notified to phone
+        self.tx_dropped_overflow = 0  # queue overflow drops
+        self.auth_dropped = 0         # auth frames detected and dropped
+
+    # -- webapp client management ----------------------------------------
+
+    async def _current_client(self) -> ServerConnection | None:
+        async with self._lock:
+            return self._client
+
+    async def _send_text(self, client: ServerConnection, obj: dict) -> bool:
+        try:
+            await client.send(json.dumps(obj))
+            return True
+        except Exception as exc:  # client went away mid-send
+            log.debug("WS send failed: %s", exc)
+            return False
+
+    async def ws_handler(self, connection: ServerConnection) -> None:
+        peer = getattr(connection, "remote_address", "?")
+        log.info("WS connection from %s", peer)
+        try:
+            async for message in connection:
+                if isinstance(message, str):
+                    await self._handle_text(connection, message)
+                else:
+                    await self._handle_binary(connection, message)
+        except Exception as exc:
+            log.debug("WS handler error for %s: %s", peer, exc)
+        finally:
+            async with self._lock:
+                if self._client is connection:
+                    self._client = None
+                    log.info("sim webapp client disconnected")
+
+    async def _handle_text(self, connection: ServerConnection, message: str) -> None:
+        try:
+            msg = json.loads(message)
+        except ValueError:
+            log.debug("ignoring non-JSON WS text")
+            return
+        if not isinstance(msg, dict) or msg.get("t") != "join" or msg.get("role") != "sim":
+            log.debug("ignoring WS text message: %.60r", message)
+            return
+        async with self._lock:
+            old = self._client
+            self._client = connection
+        if old is not None and old is not connection:
+            log.info("new sim client joined: replacing previous client")
+            try:
+                await old.close(code=4001, reason="replaced by new sim client")
+            except Exception:
+                pass
+        await self._send_text(connection, {"t": "joined"})
+        await self._send_text(connection, {"t": "ble", "connected": self.ble_link})
+        log.info("sim webapp client joined from %s", getattr(connection, "remote_address", "?"))
+
+    async def _handle_binary(self, connection: ServerConnection, message: bytes | bytearray) -> None:
+        client = await self._current_client()
+        if client is not connection:
+            log.debug("binary WS message from unjoined client ignored")
+            return
+        frame = bytes(message)
+        if len(frame) != FRAME_LEN:
+            log.warning("rejected webapp binary of %d bytes (need %d)", len(frame), FRAME_LEN)
+            await self._send_text(
+                connection,
+                {"t": "error", "msg": "frame must be %d bytes, got %d" % (FRAME_LEN, len(frame))},
+            )
+            return
+        await self.enqueue_notify(frame)
+
+    async def enqueue_notify(self, frame: bytes) -> bool:
+        """Queue a 20-byte sim frame for BLE notify. Drop-oldest on
+        overflow; every dropped frame is counted. Returns False when the
+        frame is not exactly 20 bytes."""
+        if len(frame) != FRAME_LEN:
+            return False
+        while self.notify_queue.full():
+            try:
+                self.notify_queue.get_nowait()
+            except asyncio.QueueEmpty:
+                break
+            self.tx_dropped_overflow += 1
+        await self.notify_queue.put(frame)
+        return True
+
+    # -- /health on the same port ----------------------------------------
+
+    async def process_request(self, connection: ServerConnection, request: Request):  # noqa: ANN201
+        if request.path == "/health" and request.method.upper() == "GET":
+            body = json.dumps({"ok": True, "ble": self.ble_link}).encode("ascii")
+            return Response(
+                200,
+                "OK",
+                Headers(
+                    {
+                        "Content-Type": "application/json",
+                        "Content-Length": str(len(body)),
+                        "Connection": "close",
+                    }
+                ),
+                body,
+            )
+        if request.path == "/" :
+            return None  # let the WebSocket handshake proceed
+        body = b"not found"
+        return Response(
+            404,
+            "Not Found",
+            Headers({"Content-Type": "text/plain", "Content-Length": str(len(body)), "Connection": "close"}),
+            body,
+        )
+
+    # -- BLE -> webapp ----------------------------------------------------
+
+    async def publish_ble_write(self, frame: bytes) -> None:
+        """Called by the BLE layer for each 20-byte write from the phone."""
+        self.rx_frames += 1
+        if frame and frame[0] in AUTH_FIRST_BYTES:
+            # SAFETY: auth challenge/response frames are detected and
+            # dropped here. They are never answered and never forwarded.
+            self.auth_dropped += 1
+            log.warning(
+                "auth frame 0x%02X detected from phone: dropped, never answered (safety boundary)",
+                frame[0],
+            )
+            return
+        client = await self._current_client()
+        if client is None:
+            self.rx_dropped_no_client += 1
+            return
+        try:
+            await client.send(frame)
+            self.rx_forwarded += 1
+        except Exception as exc:
+            self.rx_dropped_no_client += 1
+            log.debug("dropped BLE write, webapp client gone: %s", exc)
+
+    # -- webapp -> BLE ----------------------------------------------------
+
+    async def notify_consumer(self, notify_fn) -> None:
+        """Drain the notify queue, throttled to <=50 Hz.
+
+        notify_fn: async callable taking 20 bytes; implemented by BLE layer.
+        """
+        while True:
+            frame = await self.notify_queue.get()
+            wait = NOTIFY_MIN_INTERVAL_S - (time.monotonic() - self._last_notify)
+            if wait > 0:
+                await asyncio.sleep(wait)
+            try:
+                await notify_fn(frame)
+                self.tx_frames += 1
+            except Exception as exc:
+                log.warning("BLE notify failed: %s", exc)
+            self._last_notify = time.monotonic()
+
+    def set_ble_link(self, connected: bool) -> None:
+        if connected == self.ble_link:
+            return
+        self.ble_link = connected
+        log.info("BLE phone link %s (connected AND subscribed)", "UP" if connected else "DOWN")
+        loop = asyncio.get_running_loop()
+        loop.create_task(self._broadcast_ble())
+
+    async def _broadcast_ble(self) -> None:
+        client = await self._current_client()
+        if client is None:
+            return
+        await self._send_text(client, {"t": "ble", "connected": self.ble_link})
+
+    def stats_snapshot(self) -> dict:
+        return {
+            "rx_frames": self.rx_frames,
+            "rx_forwarded": self.rx_forwarded,
+            "rx_dropped_no_client": self.rx_dropped_no_client,
+            "rx_dropped_bad_len": self.rx_dropped_bad_len,
+            "tx_frames": self.tx_frames,
+            "tx_dropped_overflow": self.tx_dropped_overflow,
+            "auth_dropped": self.auth_dropped,
+            "queue_depth": self.notify_queue.qsize(),
+            "ble_link": self.ble_link,
+        }
+
+
+async def stats_loop(hub: WsHub) -> None:
+    while True:
+        await asyncio.sleep(STATS_INTERVAL_S)
+        s = hub.stats_snapshot()
+        log.info(
+            "stats rx=%d fwd=%d (no_client=%d bad_len=%d) tx=%d (overflow_drop=%d) "
+            "auth_dropped=%d queue=%d ble_link=%s",
+            s["rx_frames"], s["rx_forwarded"], s["rx_dropped_no_client"],
+            s["rx_dropped_bad_len"], s["tx_frames"], s["tx_dropped_overflow"],
+            s["auth_dropped"], s["queue_depth"], s["ble_link"],
+        )
+
+
 # BLE layer (WinRT GattServiceProvider). winrt is imported lazily so the
 # WS layer above stays importable/testable without it.
 # --------------------------------------------------------------------------
@@ -323,8 +539,6 @@ async def ble_task(hub: WsHub, args) -> None:
 async def amain(args) -> None:
     hub = WsHub()
     try:
-        from websockets.asyncio.server import serve as ws_serve
-
         server = await ws_serve(
             hub.ws_handler,
             args.host,
