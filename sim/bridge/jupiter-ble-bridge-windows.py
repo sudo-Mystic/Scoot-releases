@@ -483,11 +483,14 @@ class _WinBleServer:
         # payloads. The provider advertisement carries the service UUID
         # (connectable + discoverable); the Scoot app scans unfiltered and
         # keys off the advertised service UUID, so no local name is needed.
+        # NOTE: pywinrt projects the StartAdvertising(parameters) overload as
+        # start_advertising_with_parameters(); start_advertising() is the
+        # parameterless overload.
         aparams = w["GattServiceProviderAdvertisingParameters"]()
         aparams.is_connectable = True
         aparams.is_discoverable = True
         log.info("BLE: starting GATT service advertisement ...")
-        self._provider.start_advertising(aparams)
+        self._provider.start_advertising_with_parameters(aparams)
         astatus = self._provider.advertisement_status
         if astatus != w["GattServiceProviderAdvertisementStatus"].STARTED:
             raise RuntimeError(
