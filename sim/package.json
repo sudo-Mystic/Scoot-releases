@@ -9,7 +9,7 @@
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview",
-    "deploy": "vite build && rm -rf assets && cp dist/app.html index.html && cp -r dist/assets ."
+    "deploy": "./scripts/deploy.sh"
   },
   "type": "module",
   "version": "0.1.0"
