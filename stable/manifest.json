@@ -1,29 +1,29 @@
 {
   "channel": "stable",
-  "version": "0.5.3",
-  "versionCode": 2020,
+  "version": "0.5.4",
+  "versionCode": 2021,
   "minSupportedVersion": "0.1.0",
-  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.3/app-arm64-v8a-release.apk",
-  "sha256": "9bbec2efdc5da1bacff0b46d021c42bb9882b6e16aea46fa77c373f643712b31",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.4/app-arm64-v8a-release.apk",
+  "sha256": "fe6bd72efe3e775c096f4888e21556c0e266d62ab7981b6adc02c554d1b09f32",
   "signature": "",
-  "releaseNotes": "Release v0.5.3\n\n- Save places: first save no longer throws 'cannot remove from an unmodifiable list'\n- Nav map: parked-scooter overlay card with one-tap navigate-back\n- Destination card dismisses via corner X\n- Dashboard header truncation fixed\n- Settings > Diagnostics: in-app crash log viewer (Dart + native traces)\n- Mappls nav: TTS setup/stop hardened against unhandled async errors",
-  "createdAt": "2026-09-30T19:38:39.686595Z",
+  "releaseNotes": "Release v0.5.4\n\n- Mappls crash fixed: the mandatory Mappls Services Gradle plugin (com.mappls.services.android) is now applied, so the SDK no longer throws IllegalStateException on its worker thread and Mappls search plus navigation work instead of killing the app",
+  "createdAt": "2026-09-30T20:23:39.643436Z",
   "protocolCompatibility": {},
   "artifacts": [
     {
       "abi": "arm64-v8a",
-      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.3/app-arm64-v8a-release.apk",
-      "sha256": "9bbec2efdc5da1bacff0b46d021c42bb9882b6e16aea46fa77c373f643712b31"
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.4/app-arm64-v8a-release.apk",
+      "sha256": "fe6bd72efe3e775c096f4888e21556c0e266d62ab7981b6adc02c554d1b09f32"
     },
     {
       "abi": "armeabi-v7a",
-      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.3/app-armeabi-v7a-release.apk",
-      "sha256": "ab73c83bdbcff71acceac89c058f4763c583bfd81f49d671107a62e128089cfa"
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.4/app-armeabi-v7a-release.apk",
+      "sha256": "06502d4669be214ff2b795df0c11433a4086cdfa5bc9f16514959a6412fe178b"
     },
     {
       "abi": "x86_64",
-      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.3/app-x86_64-release.apk",
-      "sha256": "b172d4e5dfbc3c44ed9203c2346cd096a51dc7347e2c03602ab756a1e479cd84"
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.4/app-x86_64-release.apk",
+      "sha256": "535f87db20cb29e41a9e586e2e8e49b9d9b26008e0943db141a5ecf8dc70bccb"
     }
   ]
 }

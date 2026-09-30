@@ -1,0 +1,29 @@
+{
+  "channel": "stable",
+  "version": "0.5.4",
+  "versionCode": 2021,
+  "minSupportedVersion": "0.1.0",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.4/app-arm64-v8a-release.apk",
+  "sha256": "fe6bd72efe3e775c096f4888e21556c0e266d62ab7981b6adc02c554d1b09f32",
+  "signature": "",
+  "releaseNotes": "Release v0.5.4\n\n- Mappls crash fixed: the mandatory Mappls Services Gradle plugin (com.mappls.services.android) is now applied, so the SDK no longer throws IllegalStateException on its worker thread and Mappls search plus navigation work instead of killing the app",
+  "createdAt": "2026-09-30T20:23:39.643436Z",
+  "protocolCompatibility": {},
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.4/app-arm64-v8a-release.apk",
+      "sha256": "fe6bd72efe3e775c096f4888e21556c0e266d62ab7981b6adc02c554d1b09f32"
+    },
+    {
+      "abi": "armeabi-v7a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.4/app-armeabi-v7a-release.apk",
+      "sha256": "06502d4669be214ff2b795df0c11433a4086cdfa5bc9f16514959a6412fe178b"
+    },
+    {
+      "abi": "x86_64",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.4/app-x86_64-release.apk",
+      "sha256": "535f87db20cb29e41a9e586e2e8e49b9d9b26008e0943db141a5ecf8dc70bccb"
+    }
+  ]
+}
