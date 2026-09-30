@@ -46,7 +46,13 @@ Prerequisites (Windows 10+, Bluetooth radio with BLE peripheral support):
   pip install -r requirements-windows.txt   (websockets + winrt-runtime
                                              + the winrt-Windows.* namespace packages)
 
-Run:  python .\\jupiter-ble-bridge-windows.py [--host 0.0.0.0] [--port 8765] [--no-ble]
+Run:  python .\\jupiter-ble-bridge-windows.py [--host 0.0.0.0] [--port 8765] [--no-ble] [--adapter <name>]
+
+Using a USB BLE dongle: the WinRT GATT server always advertises on the
+Windows DEFAULT Bluetooth radio (no API exists to pick another one), so
+--adapter alone cannot move the advertisement to the dongle. Disable the
+built-in Bluetooth adapter in Device Manager so the dongle becomes the
+default (and ideally only) radio, then run the bridge normally.
 """
 
 from __future__ import annotations
@@ -327,12 +333,10 @@ def _require_winrt():
             GattServiceProviderAdvertisementStatus,
             GattServiceProviderAdvertisingParameters,
         )
-        from winrt.windows.devices.enumeration import DeviceInformation
         from winrt.windows.storage.streams import DataReader, DataWriter
         return {
             "BluetoothAdapter": BluetoothAdapter,
             "BluetoothError": BluetoothError,
-            "DeviceInformation": DeviceInformation,
             "GattCharacteristicProperties": GattCharacteristicProperties,
             "GattLocalCharacteristicParameters": GattLocalCharacteristicParameters,
             "GattProtectionLevel": GattProtectionLevel,
@@ -350,6 +354,7 @@ def _require_winrt():
             "winrt-Windows.Devices.Bluetooth[all] "
             "winrt-Windows.Devices.Bluetooth.GenericAttributeProfile[all] "
             "winrt-Windows.Devices.Enumeration[all] "
+            "winrt-Windows.Devices.Radios[all] "
             "winrt-Windows.Storage.Streams[all])."
         )
         sys.exit(2)
@@ -399,43 +404,39 @@ def _bytes_from_ibuffer(winrt, buf) -> bytes:
     return bytes(raw)
 
 
-async def _pick_adapter(w, want):
-    """Return the BluetoothAdapter to use.
+async def _list_bt_radios():
+    """List Bluetooth radios as (name, state) via the Radio API.
 
-    Enumerates every BT radio on the PC so a USB dongle can be picked
-    explicitly (e.g. --adapter realtek) instead of the built-in radio.
-    Without --adapter, the Windows default adapter is used.
+    Returns None when the winrt-Windows.Devices.Radios package is not
+    installed (listing skipped; the bridge still works).
+
+    NOTE: an earlier version enumerated radios with
+    DeviceInformation.find_all_async(selector). That call raises
+    "TypeError: Invalid parameter count" under pywinrt (overloaded static
+    WinRT method), so enumeration goes through Radio.get_radios_async(),
+    which has a single overload and cannot hit that failure.
     """
-    infos = await w["DeviceInformation"].find_all_async(
-        w["BluetoothAdapter"].get_device_selector()
-    )
-    found = []
-    for info in infos:
+    try:
+        from winrt.windows.devices.radios import Radio, RadioKind
+    except ImportError:
+        return None
+    out = []
+    for radio in await Radio.get_radios_async():
         try:
-            adapter = await w["BluetoothAdapter"].from_id_async(info.id)
-        except Exception as exc:
-            log.warning("BLE: skipping radio %r: %s", info.name, exc)
+            if int(radio.kind) != int(RadioKind.BLUETOOTH):
+                continue
+        except Exception:
             continue
-        peripheral = getattr(adapter, "is_peripheral_role_supported", "?")
-        log.info("BLE: radio %r (peripheral_role=%s)", info.name, peripheral)
-        found.append((info.name, adapter))
-    if want:
-        key = want.lower()
-        for name, adapter in found:
-            if key in name.lower():
-                log.info("BLE: using radio %r (--adapter match)", name)
-                return adapter
-        raise RuntimeError(
-            "no Bluetooth radio matches --adapter=%r. Available: %s"
-            % (want, ", ".join(repr(n) for n, _ in found) or "none")
-        )
-    adapter = await w["BluetoothAdapter"].get_default_async()
-    if adapter is None:
-        raise RuntimeError(
-            "no default Bluetooth adapter found. Turn Bluetooth ON in "
-            "Windows Settings (and switch Airplane mode off)."
-        )
-    return adapter
+        try:
+            name = radio.name or "?"
+        except Exception:
+            name = "?"
+        try:
+            state = str(radio.state).split(".")[-1]
+        except Exception:
+            state = "?"
+        out.append((name, state))
+    return out
 
 
 class _WinBleServer:
@@ -462,17 +463,64 @@ class _WinBleServer:
 
     async def start(self) -> None:
         w = self._winrt
-        # Fail fast with a useful message instead of a bare error code.
-        adapter = await _pick_adapter(w, self._adapter_want)
+        # Radio inventory (informational): the WinRT GATT server ALWAYS
+        # advertises on the Windows default Bluetooth radio; there is no API
+        # to bind it to a specific one. So --adapter cannot redirect the
+        # advertisement by itself: to use a USB dongle, disable the built-in
+        # Bluetooth adapter in Device Manager so the dongle becomes the
+        # default (and ideally only) radio.
+        radios = await _list_bt_radios()
+        if radios is None:
+            log.info("BLE: radio list unavailable (pip install "
+                     "winrt-Windows.Devices.Radios[all] to enable it)")
+        elif not radios:
+            log.warning("BLE: no Bluetooth radios found on this PC")
+        else:
+            for name, state in radios:
+                log.info("BLE: radio %r state=%s", name, state)
+            on = [n for n, s in radios if s.upper() == "ON"]
+            if len(on) > 1:
+                log.warning(
+                    "BLE: %d Bluetooth radios are ON (%s). The GATT server "
+                    "advertises on the Windows DEFAULT radio only, so the "
+                    "phone may never see it if the default is the wrong one. "
+                    "Disable the built-in Bluetooth adapter in Device Manager "
+                    "to force the USB dongle to be the default.",
+                    len(on), ", ".join(on),
+                )
+        if self._adapter_want:
+            key = self._adapter_want.lower()
+            hits = [n for n, _ in (radios or []) if key in n.lower()]
+            if not hits:
+                raise RuntimeError(
+                    "no Bluetooth radio matches --adapter=%r. Radios seen: %s"
+                    % (self._adapter_want,
+                       ", ".join(repr(n) for n, _ in (radios or [])) or "none")
+                )
+            log.info("BLE: --adapter matched radio(s): %s", ", ".join(hits))
+            log.warning(
+                "BLE: note --adapter only verifies the radio exists; the "
+                "advertisement still goes out on the Windows default radio. "
+                "Disable the other Bluetooth adapter(s) in Device Manager "
+                "if the phone cannot discover the scooter."
+            )
+        # The default adapter is the radio that will actually advertise.
+        adapter = await w["BluetoothAdapter"].get_default_async()
+        if adapter is None:
+            raise RuntimeError(
+                "no default Bluetooth adapter found. Turn Bluetooth ON in "
+                "Windows Settings (and switch Airplane mode off)."
+            )
         peripheral_ok = getattr(adapter, "is_peripheral_role_supported", None)
-        log.info("BLE: adapter peripheral-role supported: %s", peripheral_ok)
+        log.info("BLE: default adapter peripheral-role supported: %s",
+                 peripheral_ok)
         if peripheral_ok is False:
             raise RuntimeError(
-                "this PC's Bluetooth radio does not support BLE peripheral "
-                "mode, so the phone can never see the Jupiter-SIM advertisement "
-                "from this PC. Options: a USB BLE dongle with peripheral-mode "
-                "support, or run the Linux bridge on a machine whose radio "
-                "supports it."
+                "the default Bluetooth radio does not support BLE peripheral "
+                "mode, so the phone can never see the Jupiter-SIM advertisement. "
+                "If you have a USB BLE dongle plugged in, disable the built-in "
+                "Bluetooth adapter in Device Manager so the dongle becomes the "
+                "default radio, then restart the bridge."
             )
         result = await w["GattServiceProvider"].create_async(UUID(SERVICE_UUID))
         if result.error != w["BluetoothError"].SUCCESS:
@@ -541,11 +589,12 @@ class _WinBleServer:
                 "refused to transmit the advertisement, so the phone can never "
                 "discover the simulated scooter from this PC. This is a "
                 "radio/driver limitation, not a bridge bug: the GATT server "
-                "itself was created fine. Things to try, in order: (1) update "
-                "the Bluetooth driver in Device Manager; (2) use a USB BLE "
-                "dongle with peripheral-mode support (cheap CSR/Broadcom "
-                "ones work); (3) run the Linux bridge on a machine whose "
-                "radio supports BLE advertising."
+                "itself was created fine. Things to try, in order: (1) if a "
+                "USB BLE dongle is plugged in, disable the built-in Bluetooth "
+                "adapter in Device Manager so Windows uses the dongle as the "
+                "default radio, then restart the bridge; (2) update the "
+                "Bluetooth driver in Device Manager; (3) run the Linux bridge "
+                "on a machine whose radio supports BLE advertising."
                 % (status_name, astatus)
             )
         log.info("advertising GATT service %s (connectable, discoverable)", SERVICE_UUID)
@@ -698,9 +747,11 @@ def main() -> None:
     p.add_argument("--no-ble", action="store_true",
                    help="run the WebSocket layer only, no WinRT BLE (for testing)")
     p.add_argument("--adapter", default=None,
-                   help="use the Bluetooth radio whose name contains this text "
-                        "(e.g. --adapter realtek for a USB dongle) instead of "
-                        "the Windows default radio")
+                   help="verify a Bluetooth radio whose name contains this text "
+                        "exists (e.g. --adapter realtek). NOTE: the GATT server "
+                        "always advertises on the Windows default radio; to use "
+                        "a USB dongle, disable the built-in Bluetooth adapter "
+                        "in Device Manager so the dongle becomes the default")
     args = p.parse_args()
     try:
         asyncio.run(amain(args))

@@ -14,4 +14,5 @@ winrt-runtime
 winrt-Windows.Devices.Bluetooth[all]
 winrt-Windows.Devices.Bluetooth.GenericAttributeProfile[all]
 winrt-Windows.Devices.Enumeration[all]
+winrt-Windows.Devices.Radios[all]
 winrt-Windows.Storage.Streams[all]
