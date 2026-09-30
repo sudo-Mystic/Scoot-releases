@@ -481,20 +481,44 @@ class _WinBleServer:
         log.info("notify characteristic ready (%s)", NOTIFY_CHAR_UUID)
 
         # Advertisement: local name + service UUID, like the BlueZ one.
-        self._publisher = w["BluetoothLEAdvertisementPublisher"]()
-        log.info("BLE: publisher created, setting local name ...")
-        adv = self._publisher.advertisement
-        adv.local_name = LOCAL_NAME
-        log.info("BLE: local name set, adding service UUID ...")
-        adv.service_uuids.append(UUID(SERVICE_UUID))
-        log.info("BLE: service UUID added, starting publisher ...")
-        self._publisher.start()
+        # "Jupiter-SIM" (11 chars) + a 128-bit service UUID sits at exactly
+        # 31 bytes, the legacy advertising limit; some Windows stacks reject
+        # Start() with E_INVALIDARG instead of truncating. Fall back through
+        # smaller payloads: the phone scans by service UUID, so the name is
+        # cosmetic.
+        attempts = (("local name + service UUID", True), ("service UUID only", False))
+        for desc, with_name in attempts:
+            self._publisher = w["BluetoothLEAdvertisementPublisher"]()
+            adv = self._publisher.advertisement
+            if with_name:
+                adv.local_name = LOCAL_NAME
+            adv.service_uuids.append(UUID(SERVICE_UUID))
+            try:
+                log.info("BLE: starting publisher (%s) ...", desc)
+                self._publisher.start()
+                break
+            except OSError as exc:
+                last = with_name is False
+                if getattr(exc, "winerror", None) != -2147024809 or last:
+                    raise
+                log.warning(
+                    "BLE: advertisement (%s) rejected by the radio "
+                    "(E_INVALIDARG); retrying with a smaller payload", desc,
+                )
+        else:
+            raise RuntimeError("advertisement failed")
+        if with_name:
+            log.info("advertising as %r with service UUID %s", LOCAL_NAME, SERVICE_UUID)
+        else:
+            log.info(
+                "advertising service UUID %s (no local name: radio rejected "
+                "the full 31-byte payload)", SERVICE_UUID,
+            )
         if self._publisher.status != w["BluetoothLEAdvertisementPublisherStatus"].STARTED:
             raise RuntimeError(
                 "BLE advertisement did not start (status=%s). Does this PC's "
                 "Bluetooth radio support BLE peripheral mode?" % self._publisher.status
             )
-        log.info("advertising as %r with service UUID %s", LOCAL_NAME, SERVICE_UUID)
 
     async def stop(self) -> None:
         if self._publisher is not None:
