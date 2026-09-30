@@ -457,7 +457,7 @@ class _WinBleServer:
         wp.write_protection_level = w["GattProtectionLevel"].PLAIN
         wp.read_protection_level = w["GattProtectionLevel"].PLAIN
         wp.user_description = "Jupiter app-to-cluster"
-        wres = await self._provider.create_characteristic_async(UUID(WRITE_CHAR_UUID), wp)
+        wres = await self._provider.service.create_characteristic_async(UUID(WRITE_CHAR_UUID), wp)
         if wres.error != w["BluetoothError"].SUCCESS:
             raise RuntimeError("create write characteristic failed: %s" % wres.error)
         self._write_char = wres.characteristic
@@ -470,7 +470,7 @@ class _WinBleServer:
         np.write_protection_level = w["GattProtectionLevel"].PLAIN
         np.read_protection_level = w["GattProtectionLevel"].PLAIN
         np.user_description = "Jupiter cluster-to-app"
-        nres = await self._provider.create_characteristic_async(UUID(NOTIFY_CHAR_UUID), np)
+        nres = await self._provider.service.create_characteristic_async(UUID(NOTIFY_CHAR_UUID), np)
         if nres.error != w["BluetoothError"].SUCCESS:
             raise RuntimeError("create notify characteristic failed: %s" % nres.error)
         self._notify_char = nres.characteristic
