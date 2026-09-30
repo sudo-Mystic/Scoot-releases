@@ -50,6 +50,15 @@
    reach the bridge over the LAN).
 7. This repo checked out at `~/workspace/scoot-releases/sim/`.
 
+> Windows instead of Linux: a Windows 10+ PC with Bluetooth works too.
+> The Linux bridge (`jupiter-ble-bridge.py`) cannot run on Windows at all
+> (`dbus-next` is Linux-only D-Bus; do not try to install it on Windows).
+> Use `sim/bridge/jupiter-ble-bridge-windows.py` instead, with
+> `pip install -r sim/bridge/requirements-windows.txt`. The WebSocket
+> protocol is identical, so the webapp cannot tell the two bridges apart.
+> The PC's Bluetooth radio must support BLE peripheral mode; the bridge
+> logs an explicit error at startup if it does not.
+
 ## 4. How the pieces fit
 
 ```
@@ -88,8 +97,16 @@ Hidden sim webapp (engine + virtual cluster + control deck
 
 ### Step 1: install the bridge dependencies
 
+Linux:
+
 1. `cd ~/workspace/scoot-releases/sim`
 2. `pip install -r bridge/requirements.txt`
+
+Windows (PowerShell):
+
+1. `cd <repo>\sim\bridge`
+2. `pip install -r requirements-windows.txt`
+3. Run the Windows bridge: `python .\jupiter-ble-bridge-windows.py`
 
 > TODO (W4-bridge): `requirements.txt` has not landed yet. Confirm the
 > package list and the Python version in `sim/bridge/README.md`.
@@ -97,7 +114,8 @@ Hidden sim webapp (engine + virtual cluster + control deck
 ### Step 2: start the bridge
 
 1. `cd ~/workspace/scoot-releases/sim`
-2. `python3 bridge/jupiter-ble-bridge.py`
+2. `python3 bridge/jupiter-ble-bridge.py` (Linux) or
+   `python bridge\jupiter-ble-bridge-windows.py` (Windows, from `sim\bridge`)
 3. Wait for its log line saying it is advertising the Jupiter service
    UUID and listening on port 8765.
    (TODO W4-bridge: the exact log lines are not confirmed yet.)
