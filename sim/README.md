@@ -10,23 +10,31 @@ virtual TVS Jupiter scooter BLE side. Served from the
 ```sh
 cd sim
 npm install
-npm run dev        # local dev server
+npm run dev        # local dev server (serves the app.html source shell)
 npm run build      # production build into dist/
+npm run deploy     # build + publish dist into ./index.html + ./assets/ (commit those)
 npm run preview    # serve the production build
 ```
 
 ## Deploy
 
-Pages serves the repo root; the simulator ships as static files under
-`sim/`. Build with `npm run build` and publish the `dist/` output as
-`sim/` (the Vite `base: './'` config keeps all asset paths relative so
-it works under `/Scoot-releases/sim/`).
+Pages serves the repo root, and `/Scoot-releases/sim/` must serve a
+WORKING page. The Vite source entry is `app.html` (deliberately NOT
+`index.html`): `npm run deploy` runs `vite build`, copies
+`dist/app.html` to `./index.html`, and copies `dist/assets/` alongside
+it, then you commit the resulting `sim/index.html` + `sim/assets/`.
+`dist/` itself stays gitignored. Never hand-edit the shipped
+`sim/index.html`; edit `app.html` / `src/` and re-run `npm run deploy`.
+
+The Vite `base: './'` config keeps all asset paths relative so the
+build works under `/Scoot-releases/sim/`.
 
 ## Structure
 
 ```
 sim/
-  index.html            page shell (noindex), cockpit grid, module script
+  app.html              page shell SOURCE (noindex); dev serves this file
+  index.html            BUILT bundle, shipped on Pages (regenerate via npm run deploy)
   vite.config.js        base './', outDir dist
   package.json          vite + vanilla JS only
   CONTRACT.md           module contract (read before touching anything)
@@ -68,7 +76,8 @@ sim/
 
 ## Hidden wiring (keep hidden)
 
-- `<meta name="robots" content="noindex, nofollow">` on index.html.
+- `<meta name="robots" content="noindex, nofollow">` in app.html (survives
+  the build into the shipped index.html).
 - `sitemap.xml` MUST NOT list `sim/` (verified 2026-09-30).
 - Nothing links to `sim/` from index.html, privacy.html, terms.html.
 - robots.txt is left untouched; hiding relies on meta + no sitemap +

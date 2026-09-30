@@ -2,7 +2,8 @@
 # Scoot simulator smoke test (W15 integration gate), bridge world.
 #
 # Gates:
-#   1. npm ci + vite build in sim/; dist self-contained with relative paths
+#   1. npm ci + npm run deploy in sim/; shipped sim/index.html is the built bundle,
+#      self-contained with relative paths
 #   2. node --test on src/engine/*.test.js and tests/*.test.js, all green
 #   3. bridge WS layer: start `python3 sim/bridge/jupiter-ble-bridge.py
 #      --no-ble`, assert /health 200, run sim/bridge/smoke_local.py
@@ -36,7 +37,7 @@ cleanup_bridge() {
 trap cleanup_bridge EXIT
 
 # ---------------------------------------------------------------- 1. build
-step "[1/4] building webapp (npm ci + vite build)"
+step "[1/4] building webapp (npm ci + npm run deploy)"
 cd "$SIM_DIR"
 if [[ -f package-lock.json ]]; then
   npm ci --no-audit --no-fund
@@ -44,20 +45,27 @@ else
   echo "    note: no package-lock.json, using npm install"
   npm install --no-audit --no-fund
 fi
-npm run build
+npm run deploy
 
-# ---------------------------------------------- 1b. dist relative-path check
-step "[1b/4] checking dist/index.html asset paths"
-[[ -f dist/index.html ]] || die "dist/index.html missing after build"
-if grep -Eq '(src|href)="/' dist/index.html; then
-  die "dist/index.html contains root-absolute asset paths (breaks /sim/ on Pages)"
+# -------------------------------- 1b. built index.html shipped at sim/
+step "[1b/4] checking shipped sim/index.html is the built bundle"
+# Pages serves sim/ root, so sim/index.html MUST be the built file
+# (produced by `npm run deploy`), not the Vite source shell.
+[[ -f index.html ]] || die "sim/index.html missing (run npm run deploy)"
+if grep -Eq '(src|href)="/' index.html; then
+  die "sim/index.html contains root-absolute asset paths (breaks /sim/ on Pages)"
 fi
-if grep -Eq '(src|href)="https?://' dist/index.html; then
-  echo "    note: dist/index.html references absolute http(s) URLs (check they are intentional)"
+if grep -Eq '(src|href)="https?://' index.html; then
+  echo "    note: sim/index.html references absolute http(s) URLs (check they are intentional)"
 fi
-grep -Eq '(src|href)="\./assets/' dist/index.html \
-  || die "dist/index.html has no relative ./assets references"
-ok "dist/index.html exists with relative asset paths"
+if grep -Eq '/src/' index.html; then
+  die "sim/index.html references /src/ (source shell leaked into the shipped page; run npm run deploy)"
+fi
+grep -Eq '(src|href)="\./assets/' index.html \
+  || die "sim/index.html has no relative ./assets references (not a built bundle)"
+grep -Eq '<meta name="robots" content="noindex, nofollow"' index.html \
+  || die "sim/index.html lost the robots noindex meta"
+ok "sim/index.html is the built bundle with relative asset paths and noindex meta"
 
 # ------------------------------------------------------------------ 2. tests
 step "[2/4] running node test suites"
