@@ -3,27 +3,49 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scoot: your scooter, on your phone</title>
-<meta name="description" content="Scoot is the companion app for TVS Jupiter and Ntorq scooters. Live ride data, directions on your dashboard, and a memory of where you parked.">
+<title>Scoot: TVS Jupiter &amp; Ntorq Scooter Companion App for Android</title>
+<meta name="description" content="Free Android companion app for TVS Jupiter 110/125 and Ntorq 125: live ride data, dashboard navigation, call alerts, parking memory. Download the APK.">
 <link rel="canonical" href="https://sudo-mystic.github.io/Scoot-releases/">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#15261d">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Scoot: your scooter, on your phone">
-<meta property="og:description" content="Scoot is the companion app for TVS Jupiter and Ntorq scooters. Live ride data, directions on your dashboard, and a memory of where you parked.">
+<meta property="og:site_name" content="Scoot">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Scoot: TVS Jupiter &amp; Ntorq Scooter Companion App for Android">
+<meta property="og:description" content="Free Android companion app for TVS Jupiter 110/125 and Ntorq 125: live ride data, dashboard navigation, call alerts, parking memory. Download the APK.">
 <meta property="og:url" content="https://sudo-mystic.github.io/Scoot-releases/">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Scoot: your scooter, on your phone">
-<meta name="twitter:description" content="Scoot is the companion app for TVS Jupiter and Ntorq scooters. Live ride data, directions on your dashboard, and a memory of where you parked.">
+<meta property="og:image" content="https://sudo-mystic.github.io/Scoot-releases/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Scoot: your scooter, on your phone. Free Android app for TVS Jupiter and Ntorq.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Scoot: TVS Jupiter &amp; Ntorq Scooter Companion App for Android">
+<meta name="twitter:description" content="Free Android companion app for TVS Jupiter 110/125 and Ntorq 125: live ride data, dashboard navigation, call alerts, parking memory. Download the APK.">
+<meta name="twitter:image" content="https://sudo-mystic.github.io/Scoot-releases/og-image.png">
+<meta name="twitter:image:alt" content="Scoot: your scooter, on your phone. Free Android app for TVS Jupiter and Ntorq.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Scoot",
-  "operatingSystem": "Android",
-  "applicationCategory": "UtilitiesApplication",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
-  "url": "https://sudo-mystic.github.io/Scoot-releases/"
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Scoot",
+      "operatingSystem": "Android",
+      "applicationCategory": "UtilitiesApplication",
+      "author": {
+        "@type": "Person",
+        "name": "sudoMystic",
+        "url": "https://github.com/sudo-Mystic"
+      },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+      "url": "https://sudo-mystic.github.io/Scoot-releases/"
+    },
+    {
+      "@type": "WebSite",
+      "name": "Scoot",
+      "url": "https://sudo-mystic.github.io/Scoot-releases/"
+    }
+  ]
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -260,6 +282,23 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
   .step h3 { margin: 0 0 6px; font-size: 16px; }
   .step p { margin: 0; color: var(--muted); font-size: 14px; }
 
+  /* faq */
+  .faq {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .faq details { border-top: 1px solid var(--line); }
+  .faq details:first-child { border-top: 0; }
+  .faq summary {
+    cursor: pointer; font-weight: 700; font-size: 15.5px;
+    padding: 18px 24px; list-style: none;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .chev { color: var(--muted); font-size: 13px; flex: none; }
+  .faq .a { padding: 0 24px 20px; color: var(--muted); font-size: 14.5px; max-width: 70ch; }
+
   footer {
     margin-top: 64px; padding-top: 22px;
     border-top: 1px solid var(--line);
@@ -395,6 +434,75 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
       </div>
     </div>
   </section>
+
+  <section>
+    <h2 class="sec-head">Questions, answered</h2>
+    <p class="sec-sub">The things riders ask before installing.</p>
+    <div class="faq">
+      <details>
+        <summary>Is Scoot on the Google Play Store? <span class="chev">▾</span></summary>
+        <div class="a">Not yet. You download Scoot directly from this page and install it yourself; the steps above take about a minute. After that, updates arrive inside the app.</div>
+      </details>
+      <details>
+        <summary>Which scooters does Scoot work with? <span class="chev">▾</span></summary>
+        <div class="a">TVS Jupiter 110 and 125 are fully supported, and TVS Ntorq 125 works with a few extras still being polished. Scoot pairs with your scooter over Bluetooth.</div>
+      </details>
+      <details>
+        <summary>Is Scoot free? <span class="chev">▾</span></summary>
+        <div class="a">Yes. Scoot is free, needs no account, and has no ads.</div>
+      </details>
+      <details>
+        <summary>Does Scoot need the internet to work? <span class="chev">▾</span></summary>
+        <div class="a">Pairing and live ride data work over Bluetooth with no internet. Maps, directions and place search need a data connection.</div>
+      </details>
+      <details>
+        <summary>Is Scoot made by TVS? <span class="chev">▾</span></summary>
+        <div class="a">No. Scoot is an independent personal project and is not affiliated with, sponsored, or endorsed by TVS Motor Company.</div>
+      </details>
+      <details>
+        <summary>How do I update Scoot? <span class="chev">▾</span></summary>
+        <div class="a">Scoot checks for new versions itself and installs updates from inside the app. You can also grab the latest APK from this page any time.</div>
+      </details>
+    </div>
+  </section>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is Scoot on the Google Play Store?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Not yet. You download Scoot directly from this page and install it yourself; the steps above take about a minute. After that, updates arrive inside the app." }
+    },
+    {
+      "@type": "Question",
+      "name": "Which scooters does Scoot work with?",
+      "acceptedAnswer": { "@type": "Answer", "text": "TVS Jupiter 110 and 125 are fully supported, and TVS Ntorq 125 works with a few extras still being polished. Scoot pairs with your scooter over Bluetooth." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Scoot free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Scoot is free, needs no account, and has no ads." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Scoot need the internet to work?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Pairing and live ride data work over Bluetooth with no internet. Maps, directions and place search need a data connection." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Scoot made by TVS?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Scoot is an independent personal project and is not affiliated with, sponsored, or endorsed by TVS Motor Company." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I update Scoot?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Scoot checks for new versions itself and installs updates from inside the app. You can also grab the latest APK from this page any time." }
+    }
+  ]
+}
+</script>
 
   <footer>
     Scoot is an independent personal project. <a href="https://buymeacoffee.com/sudoMystic">Buy me a coffee</a> if Scoot earns it. ·
@@ -542,7 +650,7 @@ init().catch(function () {});
     // Scroll reveals: one timeline per section, cards stagger in.
     gsap.utils.toArray("section").forEach(function (sec) {
       var head = sec.querySelectorAll(".sec-head, .sec-sub");
-      var cards = sec.querySelectorAll(".ride-card, .feat, .step, .news-card, .get");
+      var cards = sec.querySelectorAll(".ride-card, .feat, .step, .news-card, .get, .faq");
       var tl = gsap.timeline({
         scrollTrigger: { trigger: sec, start: "top 88%" },
       });
