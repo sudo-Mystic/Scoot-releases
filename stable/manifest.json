@@ -1,19 +1,19 @@
 {
-    "channel": "stable",
-    "version": "0.5.9",
-    "versionCode": 2026,
-    "minSupportedVersion": "0.1.0",
-    "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.9/app-arm64-v8a-release.apk",
-    "sha256": "df6d7635a1e3c5f70045bccd027db9b43a4d2bebb977381c15ffe5bd72f5b297",
-    "signature": "",
-    "releaseNotes": "Calls: incoming calls now show up on your cluster display reliably\nDashboard: the odometer reading now sits with the mileage and battery stats\nTrip history: new overview card shows your total trips, distance, and ride time at a glance\nAlerts: the how-it-works guide now explains how to answer and reject calls with the handlebar switch",
-    "createdAt": "2026-10-01T15:21:06.059666Z",
-    "protocolCompatibility": {},
-    "artifacts": [
-        {
-            "abi": "arm64-v8a",
-            "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.9/app-arm64-v8a-release.apk",
-            "sha256": "df6d7635a1e3c5f70045bccd027db9b43a4d2bebb977381c15ffe5bd72f5b297"
-        }
-    ]
+  "channel": "stable",
+  "version": "0.5.10",
+  "versionCode": 2027,
+  "minSupportedVersion": "0.1.0",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.10/app-arm64-v8a-release.apk",
+  "sha256": "58d74a4d82c63e0df262d3d03b32a96db32700612f99b2da93a2a7e153140a93",
+  "signature": "",
+  "releaseNotes": "release: v0.5.10 (#56)",
+  "createdAt": "2026-10-04T05:26:00.312620Z",
+  "protocolCompatibility": {},
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.10/app-arm64-v8a-release.apk",
+      "sha256": "58d74a4d82c63e0df262d3d03b32a96db32700612f99b2da93a2a7e153140a93"
+    }
+  ]
 }
