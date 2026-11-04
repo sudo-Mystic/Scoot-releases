@@ -295,7 +295,7 @@ sanitizes (ASCII fallback) and prefers a word boundary.
 ### 0x43 Caller info (three-packet sequence, dex-verified)
 
 Each packet: `5B 43 subId <UTF-8 text> 00-pad to 17 chars FF`.
-Order sent by stock: sub 0x01 (national number, e.g. "9424502823"),
+Order sent by stock: sub 0x01 (national number, e.g. "9876543210"),
 then sub 0x03 (country code digits, e.g. "91"), then sub 0x02 (contact
 name, only when non-empty). Pad length is computed from
 `String.length()` (chars) while text is UTF-8 encoded, so non-ASCII
