@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+:root{color-scheme:light;--paper:#f4f2eb;--ink:#17241e;--muted:#667467;--line:#d8ddd2;--lime:#d9f775}
+*,*:before,*:after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.85 "DM Sans",sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--ink)}
+a:focus-visible{outline:3px solid #8eac45;outline-offset:4px}
+::selection{background:var(--lime)}
+.wrap{max-width:890px;margin:0 auto;padding:24px 28px 65px}
+header.top{height:75px;display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:46px}
+.brand{font:700 28px "Space Grotesk",sans-serif;text-decoration:none;letter-spacing:-1.9px}
+.brand span{color:#66892b}
+.back{font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:9px;text-decoration:none;border:1px solid var(--line);padding:8px 14px;border-radius:50px;background:#fffefa}
+.back:hover{background:#e6eddb}
+.card{background:#fffefa;border:1px solid #dce0d4;border-radius:23px;padding:57px 69px 67px}
+.card:before{content:"THE SCOOT PROJECT / IMPORTANT INFORMATION";font:800 10px "DM Sans",sans-serif;letter-spacing:1.7px;color:#68823f}
+h1{font:600 clamp(37px,6vw,61px)/1.05 "Space Grotesk",sans-serif;letter-spacing:-3px;margin:19px 0 13px}
+.updated{font-size:12px;color:var(--muted);padding-bottom:30px;border-bottom:1px solid var(--line);margin-bottom:35px}
+h2{font:600 21px/1.35 "Space Grotesk",sans-serif;letter-spacing:-.6px;margin:36px 0 9px}
+p,li{font-size:14px;line-height:1.9;color:#4f6053}
+p{margin:0 0 15px}
+ul{margin:0 0 15px;padding-left:22px}
+a:not(.brand):not(.back){text-underline-offset:3px;font-weight:700}
+footer{margin-top:33px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:18px;align-items:center}
+footer a{font-size:12px;text-decoration:none;margin-left:10px}
+@media(max-width:620px){.wrap{padding:11px 16px 35px}header.top{margin-bottom:16px}.card{padding:35px 24px 40px;border-radius:18px}.card:before{font-size:9px;letter-spacing:1px}h1{letter-spacing:-1.8px}.updated{padding-bottom:25px;margin-bottom:23px}h2{font-size:19px;margin-top:31px}footer{display:block;line-height:2}footer a{margin:0 12px 0 0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
