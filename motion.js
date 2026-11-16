@@ -11,9 +11,21 @@
   const screens = Array.from(document.querySelectorAll("[data-preview-screen]"));
   const connection = document.getElementById("previewConnection");
   const previewStatus = {
-    ride: "● Connected",
-    nav: "● Navigating",
-    park: "● Saved location"
+    ride: {
+      connection: "● Connected", announce: "Ride overview illustration",
+      statusTitle: "You're connected", statusSub: "Bluetooth paired",
+      hintTitle: "Next turn · left", hintSub: "In 350 metres"
+    },
+    nav: {
+      connection: "● Navigating", announce: "Illustrative turn-by-turn navigation screen",
+      statusTitle: "Directions active", statusSub: "Cluster turn prompts",
+      hintTitle: "Turn left ahead", hintSub: "In 350 metres"
+    },
+    park: {
+      connection: "● Saved location", announce: "Illustrative saved parking spot screen",
+      statusTitle: "Spot remembered", statusSub: "Saved on your phone",
+      hintTitle: "Find your way back", hintSub: "Parking location"
+    }
   };
 
   function switchPreview(mode) {
@@ -26,7 +38,14 @@
     for (const screen of screens) {
       screen.hidden = screen.dataset.previewScreen !== mode;
     }
-    if (connection) connection.textContent = previewStatus[mode];
+    const values = previewStatus[mode];
+    if (connection) connection.textContent = values.connection;
+    for (const id of ["statusTitle", "statusSub", "hintTitle", "hintSub"]) {
+      const node = document.getElementById(id);
+      if (node) node.textContent = values[id];
+    }
+    const announce = document.getElementById("previewAnnounce");
+    if (announce) announce.textContent = values.announce;
   }
 
   for (const button of modeButtons) {
