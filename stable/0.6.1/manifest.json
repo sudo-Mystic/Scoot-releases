@@ -1,0 +1,19 @@
+{
+  "channel": "stable",
+  "version": "0.6.1",
+  "versionCode": 2030,
+  "minSupportedVersion": "0.1.0",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.6.1/app-arm64-v8a-release.apk",
+  "sha256": "5d986a3b2ecbb3cf34b5a7ee436b37e0975d7e6f88ce6d4d9d68fc7a62b6594b",
+  "signature": "",
+  "releaseNotes": "Merge develop into master for v0.6.1 (PRs #71, #72)",
+  "createdAt": "2026-11-16T17:36:23.221667Z",
+  "protocolCompatibility": {},
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.6.1/app-arm64-v8a-release.apk",
+      "sha256": "5d986a3b2ecbb3cf34b5a7ee436b37e0975d7e6f88ce6d4d9d68fc7a62b6594b"
+    }
+  ]
+}
