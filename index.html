@@ -56,9 +56,12 @@
 posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "https://us.i.posthog.com" });
 </script>
 <link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="motion.css">
+<script src="motion.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 <div class="site">
   <header class="top container" aria-label="Main navigation">
     <a class="brand" href="./" aria-label="Scoot home">
@@ -95,26 +98,60 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
           </a>
         </div>
         <p class="hero-fine" id="heroFine">Free · No account needed · Android APK</p>
+        <div class="demo-switch" aria-label="Explore the illustrative app experience">
+          <span class="demo-label">TAKE A LOOK INSIDE <span aria-hidden="true">↗</span></span>
+          <div class="demo-buttons" role="group" aria-label="App preview screen">
+            <button type="button" data-preview-mode="ride" aria-controls="phonePreview" aria-pressed="true">Ride</button>
+            <button type="button" data-preview-mode="nav" aria-controls="phonePreview" aria-pressed="false">Navigate</button>
+            <button type="button" data-preview-mode="park" aria-controls="phonePreview" aria-pressed="false">Park</button>
+          </div>
+        </div>
         <div class="hero-edge"><span><i aria-hidden="true"></i> Built for real rides</span><span><i aria-hidden="true"></i> No ads</span><span><i aria-hidden="true"></i> Independent project</span></div>
       </div>
 
-      <div class="hero-art" role="img" aria-label="Illustrative Scoot ride dashboard with ride information and connection status. This is a design preview, not an actual app screenshot.">
+      <div class="hero-art" data-mode="ride" aria-label="Interactive illustrative Scoot app preview. Choose Ride, Navigate or Park to change the example screen.">
         <span class="art-orbit one" aria-hidden="true"></span>
         <span class="art-orbit two" aria-hidden="true"></span>
         <span class="art-orbit three" aria-hidden="true"></span>
         <div class="phone" aria-hidden="true">
           <div class="phone-camera"></div>
-          <div class="phone-screen">
-            <div class="phone-top"><b>scoot<span style="color:#7b9d56">.</span></b><span>● Connected</span></div>
-            <div class="phone-label">RIDE OVERVIEW</div>
-            <div class="phone-stat"><strong>42</strong><span>km/h</span></div>
-            <div class="mini-chart">
-              <div class="mini-chart-top"><span>YOUR JOURNEY</span><strong>12.4 km</strong></div>
-              <svg viewBox="0 0 210 96" aria-hidden="true"><path d="M4 78 C32 80 30 23 62 43 S106 86 127 34 180 23 206 10" stroke="#d9f775" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M4 78 C32 80 30 23 62 43 S106 86 127 34 180 23 206 10 L206 96 L4 96 Z" fill="#d9f775" opacity=".09"/><circle cx="206" cy="10" r="4" fill="#d9f775"/><path d="M4 95H206" stroke="#41604a" stroke-dasharray="4 5"/></svg>
+          <div class="phone-screen" id="phonePreview">
+            <div class="phone-top"><b>scoot<span style="color:#7b9d56">.</span></b><span id="previewConnection">● Connected</span></div>
+            <div class="screen-state" data-preview-screen="ride">
+              <div class="phone-label">RIDE OVERVIEW / DEMO</div>
+              <div class="phone-stat"><strong>42</strong><span>km/h</span></div>
+              <div class="mini-chart">
+                <div class="mini-chart-top"><span>YOUR JOURNEY</span><strong>12.4 km</strong></div>
+                <svg viewBox="0 0 210 96" aria-hidden="true"><path class="ride-trace" d="M4 78 C32 80 30 23 62 43 S106 86 127 34 180 23 206 10" stroke="#d9f775" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M4 78 C32 80 30 23 62 43 S106 86 127 34 180 23 206 10 L206 96 L4 96 Z" fill="#d9f775" opacity=".09"/><circle cx="206" cy="10" r="4" fill="#d9f775"/><path d="M4 95H206" stroke="#41604a" stroke-dasharray="4 5"/></svg>
+              </div>
+              <div class="phone-metrics">
+                <div class="phone-metric"><span>Fuel level</span><strong>78<small>%</small></strong></div>
+                <div class="phone-metric"><span>Ride time</span><strong>28<small> min</small></strong></div>
+              </div>
             </div>
-            <div class="phone-metrics">
-              <div class="phone-metric"><span>Fuel level</span><strong>78<small>%</small></strong></div>
-              <div class="phone-metric"><span>Ride time</span><strong>28<small> min</small></strong></div>
+            <div class="screen-state" data-preview-screen="nav" hidden>
+              <div class="phone-label">NAVIGATION / DEMO</div>
+              <div class="preview-direction"><span class="direction-symbol" aria-hidden="true">↰</span><span><strong>Turn left</strong><small>in 350 metres</small></span></div>
+              <div class="map-preview nav-map" aria-hidden="true">
+                <svg viewBox="0 0 210 160" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M-9 34L80 65 132 30 223 58M-5 120L48 96 102 125 161 104 225 137M47-9L67 169M145-9L168 169" stroke="#bed0bc" stroke-width="15"/><path d="M-9 34L80 65 132 30 223 58M-5 120L48 96 102 125 161 104 225 137M47-9L67 169M145-9L168 169" stroke="#eff4ed" stroke-width="11"/><path class="route-trace" d="M34 150L52 112 90 112 118 95 146 58 175 45" stroke="#1c5335" stroke-width="6"/><circle cx="34" cy="150" r="7" fill="#1c5335" stroke="#fff" stroke-width="3"/><circle cx="175" cy="45" r="10" fill="#d9f775" stroke="#1c5335" stroke-width="4"/></svg>
+                <span class="map-caption">ILLUSTRATIVE ROUTE</span>
+              </div>
+              <div class="phone-metrics">
+                <div class="phone-metric"><span>Remaining</span><strong>3.8<small> km</small></strong></div>
+                <div class="phone-metric"><span>ETA</span><strong>12<small> min</small></strong></div>
+              </div>
+            </div>
+            <div class="screen-state" data-preview-screen="park" hidden>
+              <div class="phone-label">PARKING MEMORY / DEMO</div>
+              <div class="park-title">Found your <em>spot.</em></div>
+              <div class="map-preview park-map" aria-hidden="true">
+                <svg viewBox="0 0 210 175" fill="none" stroke-linecap="round"><path d="M-15 32L232 110M-20 126L214 35M29-10L74 192M169-8L143 198" stroke="#c1d1c0" stroke-width="19"/><path d="M-15 32L232 110M-20 126L214 35M29-10L74 192M169-8L143 198" stroke="#f1f6f0" stroke-width="12"/><path d="M42 131Q91 128 95 92T167 62" stroke="#315b3e" stroke-width="4" stroke-dasharray="5 8"/><circle cx="42" cy="131" r="7" fill="#fff" stroke="#315b3e" stroke-width="4"/><circle cx="167" cy="62" r="19" fill="#d9f775" opacity=".45"/><path d="M167 39c-12 0-21 9-21 21 0 15 21 36 21 36s21-21 21-36c0-12-9-21-21-21Z" fill="#254630"/><circle cx="167" cy="60" r="7" fill="#d9f775"/></svg>
+                <span class="map-caption">ILLUSTRATIVE MAP</span>
+              </div>
+              <div class="phone-metrics">
+                <div class="phone-metric"><span>Parking</span><strong class="metric-word">Saved</strong></div>
+                <div class="phone-metric"><span>Find your way</span><strong class="metric-word">Back ↗</strong></div>
+              </div>
             </div>
             <div class="phone-bottom"><i></i><i></i><i></i></div>
           </div>
@@ -204,7 +241,7 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
           <a class="inline-link" href="https://github.com/sudo-Mystic/Scoot-releases/tree/main/stable" target="_blank" rel="noopener noreferrer">Explore version archive <span aria-hidden="true">↗</span></a>
         </div>
         <div class="news-card">
-          <div class="release-top"><div class="v" id="newsVer">Checking latest release…</div><span class="release-stamp">LATEST RELEASE</span></div>
+          <div class="release-top"><div class="v" id="newsVer">Checking latest release…</div><span class="release-stamp" id="releaseDate">LATEST RELEASE</span></div>
           <ul class="notes" id="releaseNotes"><li>Fetching release notes…</li></ul>
         </div>
       </div>
@@ -278,6 +315,9 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
     </div>
   </footer>
 </div>
+<a href="#main" id="backTop" class="back-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"/></svg>
+</a>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -350,6 +390,13 @@ async function init() {
   const v = m.version;
   document.getElementById("verPill").innerHTML = "<b>v" + v + "</b> · stable";
   document.getElementById("newsVer").innerHTML = "Version " + v + " <span>· latest stable</span>";
+  if (m.createdAt) {
+    const date = new Date(m.createdAt);
+    if (!Number.isNaN(date.getTime())) {
+      document.getElementById("releaseDate").textContent = "SHIPPED " +
+        new Intl.DateTimeFormat("en-IN", {day:"numeric", month:"short", year:"numeric", timeZone:"UTC"}).format(date).toUpperCase();
+    }
+  }
 
   const armUrl = `stable/${v}/app-arm64-v8a-release.apk`;
   for (const id of ["heroDownload", "mainDownload"]) {
