@@ -1,19 +1,19 @@
 {
   "channel": "stable",
-  "version": "0.5.10",
-  "versionCode": 2027,
+  "version": "0.6.0",
+  "versionCode": 2029,
   "minSupportedVersion": "0.1.0",
-  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.10/app-arm64-v8a-release.apk",
-  "sha256": "58d74a4d82c63e0df262d3d03b32a96db32700612f99b2da93a2a7e153140a93",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.6.0/app-arm64-v8a-release.apk",
+  "sha256": "394de00a9032511fca7c1511d3de668a287ad2633cc4cdccef8239967646e8c3",
   "signature": "",
-  "releaseNotes": "release: v0.5.10 (#56)",
-  "createdAt": "2026-10-04T05:26:00.312620Z",
+  "releaseNotes": "Merge develop into master for v0.6.0 (PRs #62, #65, #66, #67, #69)",
+  "createdAt": "2026-11-16T08:15:47.477435Z",
   "protocolCompatibility": {},
   "artifacts": [
     {
       "abi": "arm64-v8a",
-      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.5.10/app-arm64-v8a-release.apk",
-      "sha256": "58d74a4d82c63e0df262d3d03b32a96db32700612f99b2da93a2a7e153140a93"
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.6.0/app-arm64-v8a-release.apk",
+      "sha256": "394de00a9032511fca7c1511d3de668a287ad2633cc4cdccef8239967646e8c3"
     }
   ]
 }
