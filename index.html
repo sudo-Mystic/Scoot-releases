@@ -100,6 +100,7 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
         <p class="hero-fine" id="heroFine">Free · No account needed · Android APK</p>
         <div class="demo-switch" aria-label="Explore the illustrative app experience">
           <span class="demo-label">TAKE A LOOK INSIDE <span aria-hidden="true">↗</span></span>
+          <span class="sr-only" id="previewAnnounce" aria-live="polite" aria-atomic="true">Ride overview illustration</span>
           <div class="demo-buttons" role="group" aria-label="App preview screen">
             <button type="button" data-preview-mode="ride" aria-controls="phonePreview" aria-pressed="true">Ride</button>
             <button type="button" data-preview-mode="nav" aria-controls="phonePreview" aria-pressed="false">Navigate</button>
@@ -109,7 +110,7 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
         <div class="hero-edge"><span><i aria-hidden="true"></i> Built for real rides</span><span><i aria-hidden="true"></i> No ads</span><span><i aria-hidden="true"></i> Independent project</span></div>
       </div>
 
-      <div class="hero-art" data-mode="ride" aria-label="Interactive illustrative Scoot app preview. Choose Ride, Navigate or Park to change the example screen.">
+      <div class="hero-art" data-mode="ride" role="group" aria-label="Interactive illustrative Scoot app preview. Choose Ride, Navigate or Park to change the example screen.">
         <span class="art-orbit one" aria-hidden="true"></span>
         <span class="art-orbit two" aria-hidden="true"></span>
         <span class="art-orbit three" aria-hidden="true"></span>
@@ -158,11 +159,11 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
         </div>
         <div class="float-card connect" aria-hidden="true">
           <span class="float-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m7 7 10 10-5 4V3l5 4L7 17"/></svg></span>
-          <span><strong>You're connected</strong><small>Bluetooth paired</small></span>
+          <span><strong id="statusTitle">You're connected</strong><small id="statusSub">Bluetooth paired</small></span>
         </div>
         <div class="float-card direction" aria-hidden="true">
           <span class="float-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19v-7a5 5 0 0 1 5-5h8m-5-5 5 5-5 5"/></svg></span>
-          <span><strong>Next turn · left</strong><small>In 350 metres</small></span>
+          <span><strong id="hintTitle">Next turn · left</strong><small id="hintSub">In 350 metres</small></span>
         </div>
         <span class="preview-label">Illustrative interface preview</span>
       </div>
