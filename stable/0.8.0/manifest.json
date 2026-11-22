@@ -1,0 +1,19 @@
+{
+  "channel": "stable",
+  "version": "0.8.0",
+  "versionCode": 2033,
+  "minSupportedVersion": "0.1.0",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.8.0/app-arm64-v8a-release.apk",
+  "sha256": "1059d3437f8263800ff6df1258b705d194514dcbe742ea3125d5f30624549258",
+  "signature": "",
+  "releaseNotes": "Release v0.8.0\n\n- Pair and reconnect using the selected scooter profile.\n- Save multiple scooters of the same model with separate ride histories and parking spots.\n- Choose from 17 phone-only profiles for GPS rides and parking.\n- Move saved rides to Drift with an automatic import from earlier versions.\n- Preview experimental Zest SmartXonnect speed and odometer telemetry. On-scooter validation is pending.",
+  "createdAt": "2026-11-22T15:47:31.028620Z",
+  "protocolCompatibility": {},
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.8.0/app-arm64-v8a-release.apk",
+      "sha256": "1059d3437f8263800ff6df1258b705d194514dcbe742ea3125d5f30624549258"
+    }
+  ]
+}
