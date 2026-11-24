@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>Scoot: TVS Jupiter &amp; Ntorq Scooter Companion App for Android</title>
-<meta name="description" content="Free Android companion app for TVS Jupiter 110/125 and Ntorq 125: live ride data, dashboard navigation, call alerts, parking memory. Download the APK.">
+<meta name="description" content="Download Scoot for Android. Get ride history, parking and supported Bluetooth features for TVS Jupiter and Ntorq SmartXonnect. Zest telemetry is experimental.">
 <link rel="canonical" href="https://sudo-mystic.github.io/Scoot-releases/">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#15261d">
@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Scoot">
 <meta property="og:locale" content="en_IN">
 <meta property="og:title" content="Scoot: TVS Jupiter &amp; Ntorq Scooter Companion App for Android">
-<meta property="og:description" content="Free Android companion app for TVS Jupiter 110/125 and Ntorq 125: live ride data, dashboard navigation, call alerts, parking memory. Download the APK.">
+<meta property="og:description" content="Download Scoot for Android. Get ride history, parking and supported Bluetooth features for TVS Jupiter and Ntorq SmartXonnect. Zest telemetry is experimental.">
 <meta property="og:url" content="https://sudo-mystic.github.io/Scoot-releases/">
 <meta property="og:image" content="https://sudo-mystic.github.io/Scoot-releases/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -21,7 +21,7 @@
 <meta property="og:image:alt" content="Scoot: your scooter, on your phone. Free Android app for TVS Jupiter and Ntorq.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Scoot: TVS Jupiter &amp; Ntorq Scooter Companion App for Android">
-<meta name="twitter:description" content="Free Android companion app for TVS Jupiter 110/125 and Ntorq 125: live ride data, dashboard navigation, call alerts, parking memory. Download the APK.">
+<meta name="twitter:description" content="Download Scoot for Android. Get ride history, parking and supported Bluetooth features for TVS Jupiter and Ntorq SmartXonnect. Zest telemetry is experimental.">
 <meta name="twitter:image" content="https://sudo-mystic.github.io/Scoot-releases/og-image.png">
 <meta name="twitter:image:alt" content="Scoot: your scooter, on your phone. Free Android app for TVS Jupiter and Ntorq.">
 <script type="application/ld+json">
@@ -76,7 +76,7 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
       <a href="https://github.com/sudo-Mystic/Scoot-releases" target="_blank" rel="noopener noreferrer">GitHub</a>
     </nav>
     <div class="nav-actions">
-      <span class="ver-pill" id="verPill" aria-live="polite">Checking version…</span>
+      <span class="ver-pill" id="verPill" aria-live="polite"><b>v0.8.0</b> · stable</span>
       <a class="nav-download" href="#download">Get Scoot <span aria-hidden="true">↗</span></a>
     </div>
   </header>
@@ -86,9 +86,9 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
       <div class="hero-copy">
         <span class="kicker">Independent Android app / TVS SmartXonnect</span>
         <h1 id="hero-heading">More connected.<br><em>Less complicated.</em></h1>
-        <p class="lead">Scoot connects your compatible Jupiter or Ntorq over Bluetooth. Ride data, cluster navigation, call alerts and trip history — without the extra clutter.</p>
+        <p class="lead">Get live readings and cluster navigation on compatible TVS SmartXonnect models. Track rides, keep your parking spot handy and manage multiple scooters in Garage.</p>
         <div class="cta-row">
-          <a class="btn-primary" id="heroDownload" href="stable/0.6.1/app-arm64-v8a-release.apk">
+          <a class="btn-primary" id="heroDownload" href="stable/0.8.0/app-arm64-v8a-release.apk">
             Download for Android
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 18v3h16v-3"/></svg>
           </a>
@@ -127,19 +127,25 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
     <section class="section container" id="compatibility" aria-labelledby="compat-title">
       <div class="section-heading">
         <div><p class="section-kicker eyebrow">01 / Your machine</p><h2 id="compat-title">Built for <em>your scooter.</em></h2></div>
-        <p>Scoot connects to supported TVS scooter instrument clusters. Pick the family you ride.</p>
+        <p>Bluetooth support depends on the SmartXonnect cluster fitted to your scooter.</p>
       </div>
       <div class="compat-grid">
         <article class="ride-card dark">
-          <span class="ride-index">01 / JUPITER</span><span class="tag">Fully supported</span>
+          <span class="ride-index">01 / JUPITER</span><span class="tag">SmartXonnect</span>
           <h3>TVS Jupiter<br><span>110 / 125</span></h3>
-          <p>Full support for compatible connected variants.</p>
+          <p>Live readings, turn prompts and call alerts on compatible clusters. Available readings vary by model.</p>
           <svg class="ride-line" viewBox="0 0 90 50" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 38h10l13-14h24l15 14h20M20 38h46M38 24l4-15h14"/><circle cx="19" cy="39" r="9"/><circle cx="71" cy="39" r="9"/></svg>
         </article>
         <article class="ride-card">
           <span class="ride-index">02 / NTORQ</span><span class="tag">Partial support</span>
           <h3>TVS Ntorq<br><span>125</span></h3>
-          <p>Core compatibility available; some extras are still being refined.</p>
+          <p>Compatible SmartXonnect clusters support core Bluetooth features. Feature coverage varies by cluster.</p>
+          <svg class="ride-line" viewBox="0 0 90 50" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 38h10l13-14h24l15 14h20M20 38h46M38 24l4-15h14"/><circle cx="19" cy="39" r="9"/><circle cx="71" cy="39" r="9"/></svg>
+        </article>
+        <article class="ride-card">
+          <span class="ride-index">03 / ZEST</span><span class="tag">Experimental</span>
+          <h3>TVS Zest<br><span>SmartXonnect</span></h3>
+          <p>Speed and odometer telemetry are available for testing. Live validation is still pending.</p>
           <svg class="ride-line" viewBox="0 0 90 50" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 38h10l13-14h24l15 14h20M20 38h46M38 24l4-15h14"/><circle cx="19" cy="39" r="9"/><circle cx="71" cy="39" r="9"/></svg>
         </article>
       </div>
@@ -159,7 +165,7 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
             <div class="feature-editorial-foot">Readings appear when your scooter is connected.</div>
           </div>
           <h3>Ride information.<br>As it happens.</h3>
-          <p>See supported speed, fuel, trip and odometer readings from your connected scooter.</p>
+          <p>See speed, odometer and other readings your connected cluster supports. View recorded rides in Ride History.</p>
         </article>
         <article class="feature-card">
           <span class="feature-no">02 / CLUSTER NAVIGATION</span>
@@ -187,14 +193,27 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
         <div>
           <p class="section-kicker eyebrow">03 / In the workshop</p>
           <h2 class="section-title" id="news-title">Updates worth <em>knowing about.</em></h2>
-          <p class="section-intro" id="newsSub">Scoot keeps evolving with improvements, fixes and refinements. Here's what just shipped.</p>
+          <p class="section-intro" id="newsSub">Changes in the latest stable Android release.</p>
           <a class="inline-link" href="https://github.com/sudo-Mystic/Scoot-releases/tree/main/stable" target="_blank" rel="noopener noreferrer">Explore version archive <span aria-hidden="true">↗</span></a>
         </div>
         <div class="news-card">
-          <div class="release-top"><div class="v" id="newsVer">Checking latest release…</div><span class="release-stamp" id="releaseDate">LATEST RELEASE</span></div>
-          <ul class="notes" id="releaseNotes"><li>Fetching release notes…</li></ul>
+          <div class="release-top"><div class="v" id="newsVer">Version 0.8.0 <span>Latest stable</span></div><span class="release-stamp" id="releaseDate">22 NOV 2026</span></div>
+          <ul class="notes" id="releaseNotes">
+            <li>Pair and reconnect using the selected scooter profile.</li>
+            <li>Keep separate ride histories and parking spots for scooters of the same model.</li>
+            <li>Choose a phone-only profile for GPS rides and parking.</li>
+            <li>Import saved rides automatically from earlier versions.</li>
+            <li>Try experimental Zest SmartXonnect speed and odometer readings.</li>
+          </ul>
         </div>
       </div>
+      <details class="more development-preview" id="developmentPreview" data-after-stable="0.8.0">
+        <summary>What’s in testing <span class="chev" aria-hidden="true">⌄</span></summary>
+        <div class="inner">
+          <p>The development build adds automatic Ride mode, separate alert controls, fuel and service logs, Papers, a home-screen widget, and backup and ZIP transfer.</p>
+          <p>The home screen is titled Scoot, with a Home tab and the app-generated Trip A and Trip B counters removed. These changes are awaiting device checks before a stable release.</p>
+        </div>
+      </details>
     </section>
 
     <section class="download-section container" id="download" aria-labelledby="download-title">
@@ -203,23 +222,24 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
           <div><p class="eyebrow">Ready when you are</p><h2 id="download-title">Get Scoot <em>on Android.</em></h2></div>
           <div class="get-details">
             <p id="getSub">Get the latest stable version of Scoot, directly from the project. Free to use, with no account and no ads.</p>
-            <a class="btn-primary" id="mainDownload" href="stable/0.6.1/app-arm64-v8a-release.apk">Get the Android APK
+            <a class="btn-primary" id="mainDownload" data-version="0.8.0" href="stable/0.8.0/app-arm64-v8a-release.apk">Get the Android APK
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 18v3h16v-3"/></svg>
             </a>
-            <div class="fine" id="mainDownloadSub">Checking latest stable version…</div>
+            <div class="fine" id="mainDownloadSub">v0.8.0 · Stable · Android 64-bit</div>
           </div>
         </div>
         <div class="download-lower">
           <details class="more">
             <summary>APK variants &amp; checksums <span class="chev" aria-hidden="true">⌄</span></summary>
-            <div class="inner"><p>Choose the build that fits your device. Tap a checksum to copy it.</p><div id="abiList"></div></div>
+            <div class="inner"><p>Check available Android builds and copy their checksums.</p><div id="abiList"><a href="stable/0.8.0/manifest.json">Open the v0.8.0 APK checksum</a></div></div>
           </details>
           <details class="more verifier">
             <summary>Verify the APK you downloaded <span class="chev" aria-hidden="true">⌄</span></summary>
             <div class="inner">
               Select your APK to check its SHA-256 checksum against the latest release. This happens on your device; the file is never uploaded.
-              <div><label class="pick" for="apkFile">Choose APK file</label><input type="file" id="apkFile" accept=".apk,application/vnd.android.package-archive"></div>
+              <div><label class="pick" for="apkFile">Choose APK file</label><input type="file" id="apkFile" accept=".apk,application/vnd.android.package-archive" disabled></div>
               <div id="verifyResult" role="status" aria-live="polite"></div>
+              <noscript>JavaScript is required for automatic verification. Open the published checksum in APK variants &amp; checksums.</noscript>
             </div>
           </details>
         </div>
@@ -243,7 +263,7 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
         <div><p class="section-kicker eyebrow">05 / Good to know</p><h2 class="section-title" id="faq-title">Before you <em>download.</em></h2></div>
         <div class="faq">
           <details><summary>Is Scoot available on the Play Store? <span class="chev" aria-hidden="true">⌄</span></summary><div class="a">Not yet. Download Scoot from this page and install the official Android APK. Future updates are also available inside the app.</div></details>
-          <details><summary>Which scooters can I connect? <span class="chev" aria-hidden="true">⌄</span></summary><div class="a">Scoot supports compatible TVS Jupiter 110 and 125 models, with partial support for TVS Ntorq 125. Feature availability depends on the scooter model and instrument cluster.</div></details>
+          <details><summary>Which scooters can I connect? <span class="chev" aria-hidden="true">⌄</span></summary><div class="a">Compatible TVS Jupiter 110, Jupiter 125 and Ntorq 125 SmartXonnect clusters can connect. Zest SmartXonnect speed and odometer readings are experimental. Features vary by cluster.</div></details>
           <details><summary>Does Scoot cost anything? <span class="chev" aria-hidden="true">⌄</span></summary><div class="a">No. Scoot is free, has no ads, and doesn't require an account.</div></details>
           <details><summary>Do I need an internet connection? <span class="chev" aria-hidden="true">⌄</span></summary><div class="a">Bluetooth pairing and supported live ride data can work without internet. Maps, place search and navigation may require data access.</div></details>
           <details><summary>Is Scoot made by TVS? <span class="chev" aria-hidden="true">⌄</span></summary><div class="a">No. Scoot is an independent personal project and is not affiliated with, sponsored or endorsed by TVS Motor Company.</div></details>
@@ -278,7 +298,7 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
     {
       "@type": "Question",
       "name": "Which scooters does Scoot work with?",
-      "acceptedAnswer": { "@type": "Answer", "text": "TVS Jupiter 110 and 125 are fully supported, and TVS Ntorq 125 works with a few extras still being polished. Scoot pairs with your scooter over Bluetooth." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Compatible TVS Jupiter 110, Jupiter 125 and Ntorq 125 SmartXonnect clusters can connect. Zest SmartXonnect speed and odometer readings are experimental. Features vary by cluster." }
     },
     {
       "@type": "Question",
@@ -316,83 +336,112 @@ function track(name, props) {
 }
 
 function notesToItems(notes, version) {
-  const lines = (notes || "").split("\n").map(l => l.trim()).filter(Boolean);
-  const items = lines.filter(l => !(l === `Release ${version}` || l === version));
-  return items.map(l => l.replace(/^[•\-*]\s*/, ""));
+  const headings = [version, "v" + version, "Release " + version, "Release v" + version];
+  return (typeof notes === "string" ? notes : "").split("\n").map(line => line.trim())
+    .filter(line => line && !headings.includes(line))
+    .map(line => line.replace(/^[•\-*]\s*/, ""));
+}
+
+async function loadRelease(fallbackVersion) {
+  for (const path of ["stable/manifest.json", "stable/" + fallbackVersion + "/manifest.json"]) {
+    try {
+      const response = await fetch(path, { cache: "no-store" });
+      if (!response.ok) continue;
+      const m = await response.json();
+      if (!m || typeof m.version !== "string" || !/^\d+\.\d+\.\d+$/.test(m.version)) continue;
+      const entries = Array.isArray(m.artifacts) && m.artifacts.length
+        ? m.artifacts : [{ abi: "arm64-v8a", sha256: m.sha256 }];
+      const artifacts = entries.filter(a => Object.hasOwn(ABI_LABELS, a?.abi) &&
+        typeof a.sha256 === "string" && /^[\da-f]{64}$/i.test(a.sha256));
+      if (artifacts.length) return { ...m, artifacts };
+    } catch (_) {}
+  }
+  return null;
 }
 
 async function init() {
-  let m;
-  try {
-    const response = await fetch("stable/manifest.json", { cache: "no-store" });
-    if (!response.ok) throw new Error("Release manifest unavailable");
-    m = await response.json();
-  } catch (_) {
-    document.getElementById("verPill").textContent = "couldn’t load";
-    document.getElementById("releaseNotes").innerHTML =
-      "<li>Couldn’t load the latest release. Please try again in a bit.</li>";
+  const preview = document.getElementById("developmentPreview");
+  const fallbackVersion = document.getElementById("mainDownload").dataset.version;
+  const fileInput = document.getElementById("apkFile");
+  const result = document.getElementById("verifyResult");
+  result.textContent = "Loading the published checksum…";
+  const m = await loadRelease(fallbackVersion);
+  if (!m) {
+    result.textContent = "Automatic verification is unavailable. The published checksum is in APK variants & checksums.";
     return;
   }
 
   const v = m.version;
-  document.getElementById("verPill").innerHTML = "<b>v" + v + "</b> · stable";
-  document.getElementById("newsVer").innerHTML = "Version " + v + " <span>· latest stable</span>";
+  const primary = m.artifacts.find(a => a.abi === "arm64-v8a") || m.artifacts[0];
+  const apkPath = abi => "stable/" + v + "/app-" + abi + "-release.apk";
+  document.getElementById("verPill").querySelector("b").textContent = "v" + v;
+  document.getElementById("newsVer").firstChild.textContent = "Version " + v + " ";
+  preview.hidden = v !== preview.dataset.afterStable;
   if (m.createdAt) {
     const date = new Date(m.createdAt);
     if (!Number.isNaN(date.getTime())) {
-      document.getElementById("releaseDate").textContent = "SHIPPED " +
-        new Intl.DateTimeFormat("en-IN", {day:"numeric", month:"short", year:"numeric", timeZone:"UTC"}).format(date).toUpperCase();
+      document.getElementById("releaseDate").textContent =
+        new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" })
+          .format(date).toUpperCase();
     }
   }
 
-  const armUrl = `stable/${v}/app-arm64-v8a-release.apk`;
+  const downloadSub = document.getElementById("mainDownloadSub");
+  downloadSub.textContent = "v" + v + " · Stable · " + primary.abi;
   for (const id of ["heroDownload", "mainDownload"]) {
     const el = document.getElementById(id);
-    el.href = armUrl;
+    el.href = apkPath(primary.abi);
     el.addEventListener("click", () =>
-      track("website_download_started", { abi: "arm64-v8a", location: id, version: v }));
+      track("website_download_started", { abi: primary.abi, location: id, version: v }));
   }
-  try {
-    const r = await fetch(armUrl, { method: "HEAD" });
-    const n = parseInt(r.headers.get("content-length") || "0", 10);
-    const size = n > 0 ? " · about " + (n / 1048576).toFixed(0) + " MB" : "";
-    document.getElementById("mainDownloadSub").textContent = "v" + v + " · latest stable" + size;
-    document.getElementById("heroFine").textContent = "Free · no account needed" + size;
-  } catch (_) {
-    document.getElementById("mainDownloadSub").textContent = "v" + v + " · latest stable";
+  fetch(apkPath(primary.abi), { method: "HEAD" }).then(response => {
+    const bytes = Number(response.headers.get("content-length"));
+    if (response.ok && bytes > 0) {
+      downloadSub.textContent += " · " + Math.round(bytes / 1048576) + " MB";
+    }
+  }).catch(() => {});
+
+  const notes = notesToItems(m.releaseNotes, v);
+  if (notes.length || v !== fallbackVersion) {
+    document.getElementById("releaseNotes").replaceChildren(
+      ...(notes.length ? notes : ["No notes for this release."]).map(note => {
+        const item = document.createElement("li");
+        item.textContent = note;
+        return item;
+      }),
+    );
   }
 
-  const items = notesToItems(m.releaseNotes, v);
-  document.getElementById("releaseNotes").innerHTML =
-    items.map(n => `<li>${n}</li>`).join("") || "<li>No notes for this release.</li>";
-
-  // Other phones.
   const abiList = document.getElementById("abiList");
-  for (const a of (m.artifacts || [])) {
-    const [name, sub] = ABI_LABELS[a.abi] || [a.abi, ""];
-    const url = `stable/${v}/app-${a.abi}-release.apk`;
+  abiList.replaceChildren();
+  for (const a of m.artifacts) {
+    const [name, sub] = ABI_LABELS[a.abi];
     const row = document.createElement("div");
     row.className = "dl-row";
     row.innerHTML = `
       <div class="name">${name}<small>${sub}</small>
         <button type="button" class="sha-chip" title="Copy checksum" aria-label="Copy checksum">check code: ${a.sha256.slice(0, 12)}…</button>
       </div>
-      <a href="${url}">Download</a>`;
-    row.querySelector(".sha-chip").addEventListener("click", e => {
-      navigator.clipboard.writeText(a.sha256).then(() => {
-        e.target.textContent = "copied!";
-        setTimeout(() => { e.target.textContent = "check code: " + a.sha256.slice(0, 12) + "…"; }, 1200);
-      });
+      <a href="${apkPath(a.abi)}">Download</a>`;
+    const button = row.querySelector(".sha-chip");
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(a.sha256);
+        button.textContent = "Copied";
+      } catch (_) {
+        button.textContent = a.sha256;
+        return;
+      }
+      setTimeout(() => { button.textContent = "check code: " + a.sha256.slice(0, 12) + "…"; }, 1200);
     });
     row.querySelector("a").addEventListener("click", () =>
       track("website_download_started", { abi: a.abi, location: "other_phones", version: v }));
     abiList.appendChild(row);
   }
 
-  // Download checker.
-  const fileInput = document.getElementById("apkFile");
-  const result = document.getElementById("verifyResult");
-  const expected = new Map((m.artifacts || []).map(a => [a.sha256.toLowerCase(), a.abi]));
+  const expected = new Set(m.artifacts.map(a => a.sha256.toLowerCase()));
+  fileInput.disabled = false;
+  result.textContent = "";
   fileInput.addEventListener("change", async () => {
     const f = fileInput.files[0];
     if (!f) return;
