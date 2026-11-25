@@ -76,7 +76,7 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
       <a href="https://github.com/sudo-Mystic/Scoot-releases" target="_blank" rel="noopener noreferrer">GitHub</a>
     </nav>
     <div class="nav-actions">
-      <span class="ver-pill" id="verPill" aria-live="polite"><b>v0.8.0</b> · stable</span>
+      <span class="ver-pill" id="verPill" aria-live="polite"><b>v0.8.1</b> · stable</span>
       <a class="nav-download" href="#download">Get Scoot <span aria-hidden="true">↗</span></a>
     </div>
   </header>
@@ -88,7 +88,7 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
         <h1 id="hero-heading">More connected.<br><em>Less complicated.</em></h1>
         <p class="lead">Get live readings and cluster navigation on compatible TVS SmartXonnect models. Track rides, keep your parking spot handy and manage multiple scooters in Garage.</p>
         <div class="cta-row">
-          <a class="btn-primary" id="heroDownload" href="stable/0.8.0/app-arm64-v8a-release.apk">
+          <a class="btn-primary" id="heroDownload" href="stable/0.8.1/app-arm64-v8a-release.apk">
             Download for Android
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 18v3h16v-3"/></svg>
           </a>
@@ -197,23 +197,16 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
           <a class="inline-link" href="https://github.com/sudo-Mystic/Scoot-releases/tree/main/stable" target="_blank" rel="noopener noreferrer">Explore version archive <span aria-hidden="true">↗</span></a>
         </div>
         <div class="news-card">
-          <div class="release-top"><div class="v" id="newsVer">Version 0.8.0 <span>Latest stable</span></div><span class="release-stamp" id="releaseDate">22 NOV 2026</span></div>
+          <div class="release-top"><div class="v" id="newsVer">Version 0.8.1 <span>Latest stable</span></div><span class="release-stamp" id="releaseDate">25 NOV 2026</span></div>
           <ul class="notes" id="releaseNotes">
-            <li>Pair and reconnect using the selected scooter profile.</li>
-            <li>Keep separate ride histories and parking spots for scooters of the same model.</li>
-            <li>Choose a phone-only profile for GPS rides and parking.</li>
-            <li>Import saved rides automatically from earlier versions.</li>
-            <li>Try experimental Zest SmartXonnect speed and odometer readings.</li>
+            <li>Home puts the next turn or live speed up front.</li>
+            <li>Reconnect and fix Bluetooth or Maps access directly from Home.</li>
+            <li>Browse rides on Rides with Week, Month, Year and All filters.</li>
+            <li>Added experimental Raider SmartXonnect telemetry, navigation and caller alerts.</li>
+            <li>Added Ride mode, Scooter records, widget and backup. Removed app Trip A and B.</li>
           </ul>
         </div>
       </div>
-      <details class="more development-preview" id="developmentPreview" data-after-stable="0.8.0">
-        <summary>What’s in testing <span class="chev" aria-hidden="true">⌄</span></summary>
-        <div class="inner">
-          <p>The development build adds automatic Ride mode, separate alert controls, fuel and service logs, Papers, a home-screen widget, and backup and ZIP transfer.</p>
-          <p>The home screen is titled Scoot, with a Home tab and the app-generated Trip A and Trip B counters removed. These changes are awaiting device checks before a stable release.</p>
-        </div>
-      </details>
     </section>
 
     <section class="download-section container" id="download" aria-labelledby="download-title">
@@ -222,16 +215,16 @@ posthog.init("phc_cqGWABtx4pfuEv6ZYbX0b7k0vJzEwbmSrA1FYPouG0N", { api_host: "htt
           <div><p class="eyebrow">Ready when you are</p><h2 id="download-title">Get Scoot <em>on Android.</em></h2></div>
           <div class="get-details">
             <p id="getSub">Get the latest stable version of Scoot, directly from the project. Free to use, with no account and no ads.</p>
-            <a class="btn-primary" id="mainDownload" data-version="0.8.0" href="stable/0.8.0/app-arm64-v8a-release.apk">Get the Android APK
+            <a class="btn-primary" id="mainDownload" data-version="0.8.1" href="stable/0.8.1/app-arm64-v8a-release.apk">Get the Android APK
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 18v3h16v-3"/></svg>
             </a>
-            <div class="fine" id="mainDownloadSub">v0.8.0 · Stable · Android 64-bit</div>
+            <div class="fine" id="mainDownloadSub">v0.8.1 · Stable · Android 64-bit</div>
           </div>
         </div>
         <div class="download-lower">
           <details class="more">
             <summary>APK variants &amp; checksums <span class="chev" aria-hidden="true">⌄</span></summary>
-            <div class="inner"><p>Check available Android builds and copy their checksums.</p><div id="abiList"><a href="stable/0.8.0/manifest.json">Open the v0.8.0 APK checksum</a></div></div>
+            <div class="inner"><p>Check available Android builds and copy their checksums.</p><div id="abiList"><a href="stable/0.8.1/manifest.json">Open the v0.8.1 APK checksum</a></div></div>
           </details>
           <details class="more verifier">
             <summary>Verify the APK you downloaded <span class="chev" aria-hidden="true">⌄</span></summary>
@@ -360,7 +353,6 @@ async function loadRelease(fallbackVersion) {
 }
 
 async function init() {
-  const preview = document.getElementById("developmentPreview");
   const fallbackVersion = document.getElementById("mainDownload").dataset.version;
   const fileInput = document.getElementById("apkFile");
   const result = document.getElementById("verifyResult");
@@ -376,7 +368,6 @@ async function init() {
   const apkPath = abi => "stable/" + v + "/app-" + abi + "-release.apk";
   document.getElementById("verPill").querySelector("b").textContent = "v" + v;
   document.getElementById("newsVer").firstChild.textContent = "Version " + v + " ";
-  preview.hidden = v !== preview.dataset.afterStable;
   if (m.createdAt) {
     const date = new Date(m.createdAt);
     if (!Number.isNaN(date.getTime())) {
