@@ -1,19 +1,19 @@
 {
   "channel": "stable",
-  "version": "0.8.0",
-  "versionCode": 2033,
+  "version": "0.8.1",
+  "versionCode": 2034,
   "minSupportedVersion": "0.1.0",
-  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.8.0/app-arm64-v8a-release.apk",
-  "sha256": "1059d3437f8263800ff6df1258b705d194514dcbe742ea3125d5f30624549258",
+  "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.8.1/app-arm64-v8a-release.apk",
+  "sha256": "9d0ce237c056b5c4665d65dd29921d35925852a447fd517f9201df52cea0c51a",
   "signature": "",
-  "releaseNotes": "Release v0.8.0\n\n- Pair and reconnect using the selected scooter profile.\n- Save multiple scooters of the same model with separate ride histories and parking spots.\n- Choose from 17 phone-only profiles for GPS rides and parking.\n- Move saved rides to Drift with an automatic import from earlier versions.\n- Preview experimental Zest SmartXonnect speed and odometer telemetry. On-scooter validation is pending.",
-  "createdAt": "2026-11-22T15:47:31.028620Z",
+  "releaseNotes": "Release v0.8.1\n\n- Home puts the next turn or live speed up front.\n- Reconnect and fix Bluetooth or Maps access directly from Home.\n- Browse rides on Rides with Week, Month, Year and All filters.\n- Added experimental Raider SmartXonnect telemetry, navigation and caller alerts.\n- Added Ride mode, Scooter records, widget and backup. Removed app Trip A and B.",
+  "createdAt": "2026-11-25T04:33:39.444495Z",
   "protocolCompatibility": {},
   "artifacts": [
     {
       "abi": "arm64-v8a",
-      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.8.0/app-arm64-v8a-release.apk",
-      "sha256": "1059d3437f8263800ff6df1258b705d194514dcbe742ea3125d5f30624549258"
+      "url": "https://raw.githubusercontent.com/sudo-Mystic/Scoot-releases/main/stable/0.8.1/app-arm64-v8a-release.apk",
+      "sha256": "9d0ce237c056b5c4665d65dd29921d35925852a447fd517f9201df52cea0c51a"
     }
   ]
 }
